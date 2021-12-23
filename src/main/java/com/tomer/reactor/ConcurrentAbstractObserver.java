@@ -1,4 +1,4 @@
-package com.tomer.reactor.pubsub;
+package com.tomer.reactor;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A non thread safe abstract obeserver/publisher that handles subscription and notification.
+ * A thread safe abstract observer that handles subscription and notification.
  * 
  * @param <T> data type of consumed events
  */
-public abstract class AbstractPublisher<T extends Supplier<String>> {
+public abstract class ConcurrentAbstractObserver<T extends Supplier<String>> {
     private Map<String, List<Consumer<T>>> observersMap = null;
 
     /**
      * No-arg empty constructor.
      */
-    protected AbstractPublisher(){}
+    protected ConcurrentAbstractObserver(){}
 
     /**
      * The method subscribes an handler with an event type.
@@ -26,9 +26,8 @@ public abstract class AbstractPublisher<T extends Supplier<String>> {
      * @param eventType
      * @param handler
      * @return boolean value indicating wether the subscription succeeded or not
-     * @throws IllegalArgumentException
      */
-    public boolean subscribe(String eventType, Consumer<T> handler) throws IllegalArgumentException {
+    public synchronized boolean subscribe(String eventType, Consumer<T> handler){
         if(null == eventType || null == handler)
             throw new IllegalArgumentException("Accepted a null argument.");
         if(null == this.observersMap)
@@ -48,9 +47,8 @@ public abstract class AbstractPublisher<T extends Supplier<String>> {
      * @param eventType 
      * @param handler
      * @return boolean value indicating wether the unsubscription succeeded or not
-     * @throws IllegalArgumentException
      */
-    public boolean unsubscribe(String eventType, Consumer<T> handler) throws IllegalArgumentException {
+    public synchronized boolean unsubscribe(String eventType, Consumer<T> handler){
         if(null == eventType || null == handler)
             throw new IllegalArgumentException("Accepted a null argument.");
         if(null != this.observersMap){
@@ -69,9 +67,8 @@ public abstract class AbstractPublisher<T extends Supplier<String>> {
      * The method notifies all handlers associated with the accepted event type.
      * 
      * @param event event object
-     * @throws IllegalArgumentException
      */
-    public void notifyAll(T event) throws IllegalArgumentException {
+    public synchronized void notifyAll(T event){
         if(null == event)
             throw new IllegalArgumentException("Accepted a null argument.");
         if(null != this.observersMap){
@@ -80,5 +77,5 @@ public abstract class AbstractPublisher<T extends Supplier<String>> {
                 for(Consumer<T> handler : eventHandlers)
                     handler.accept(event);
         }
-    }
+    }    
 }
