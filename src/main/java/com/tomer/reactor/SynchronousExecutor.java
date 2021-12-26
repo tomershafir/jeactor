@@ -5,11 +5,11 @@ import java.util.concurrent.Executor;
 /**
  * An executer that executes task synchronously in the caller thread.
  */
-public final class SynchronousExecutor implements Executor {
+final class SynchronousExecutor implements Executor {
     /**
      * No-args empty constructor.
      */
-    public SynchronousExecutor(){}
+    SynchronousExecutor(){}
 
     /**
      * The method executes synchronously the sumbitted task.
