@@ -6,14 +6,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Thread safe sync event demultiplexor of the reactor.
  */
-class ConcurrentSyncEventDemultiplexor implements EventDemultiplexor {
-    private static ConcurrentSyncEventDemultiplexor demultiplexor = null;
-    private BlockingQueue<Event> blockingQueue; // BlockingQueue implementations are thread-safe for single-element operations
+class SynchronousEventDemultiplexor implements EventDemultiplexor {
+    private static SynchronousEventDemultiplexor demultiplexor = null;
+    private final BlockingQueue<Event> blockingQueue; // BlockingQueue implementations are thread-safe for single-element operations
 
     /**
      * Private no-args empty constructor.
      */
-    private ConcurrentSyncEventDemultiplexor(){
+    private SynchronousEventDemultiplexor(){
         this.blockingQueue = new LinkedBlockingQueue<>();
     }
 
@@ -22,9 +22,9 @@ class ConcurrentSyncEventDemultiplexor implements EventDemultiplexor {
      * 
      * @return a singleton reactor
      */
-    synchronized static ConcurrentSyncEventDemultiplexor demultiplexor(){
+    synchronized static SynchronousEventDemultiplexor demultiplexor(){
         if(null == demultiplexor)
-            demultiplexor = new ConcurrentSyncEventDemultiplexor();
+            demultiplexor = new SynchronousEventDemultiplexor();
         return demultiplexor;
     }
 
@@ -34,7 +34,7 @@ class ConcurrentSyncEventDemultiplexor implements EventDemultiplexor {
      * @param event
      */
     @Override
-    public void accept(Event event){
+    public void accept(final Event event){
         this.blockingQueue.add(event);
     }
 

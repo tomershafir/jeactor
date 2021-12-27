@@ -17,7 +17,7 @@ final class SynchronousExecutor implements Executor {
      * @param task a runnable task to execute 
      */
     @Override
-    public void execute(Runnable task){
+    public void execute(final Runnable task){
         task.run();
     }
 }
