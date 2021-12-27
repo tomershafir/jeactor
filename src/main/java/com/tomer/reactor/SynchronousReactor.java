@@ -7,9 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-
 /**
  * Thread safe sync reactor implementation.
  */
@@ -130,25 +127,20 @@ public final class SynchronousReactor implements Reactor {
                 List<Consumer<Event>> eventHandlers = null;
 
                 if(null != event){
+                    // TODO: address the fact that the following locking may casue starvation of threads trying to register and unregister the reactor, maybe using fair reentrant lock
                     synchronized(observersMapLock){
-                        if(null != this.observersMap)
-                        try {
-                            // deep clone using serialize-deserialize combnation with json as intermediary
-                            eventHandlers = ObjectMapperProxy.getObjectMapper().<List<Consumer<Event>>>readValue(ObjectMapperProxy.getObjectMapper().writeValueAsString(this.observersMap.get(event.type())), new TypeReference<List<Consumer<Event>>>(){});
-                        } catch(JsonProcessingException e){
-                            System.err.println(e.getMessage());
-                            eventHandlers = null;
-                        }
-                    }
-                    
-                    if(null != eventHandlers){
-                        for(final Consumer<Event> handler : eventHandlers){
-                            taskExecutor.execute(new Runnable() {
-                                @Override
-                                public void run(){
-                                    handler.accept(event);
+                        if(null != this.observersMap){
+                            eventHandlers = this.observersMap.get(event.type());
+                            if(null != eventHandlers){
+                                for(final Consumer<Event> handler : eventHandlers){
+                                    taskExecutor.execute(new Runnable() {
+                                        @Override
+                                        public void run(){
+                                            handler.accept(event);
+                                        }
+                                    });
                                 }
-                            });
+                            }
                         }
                     }
                 }
