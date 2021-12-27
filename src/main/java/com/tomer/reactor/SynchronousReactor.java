@@ -2,6 +2,8 @@ package com.tomer.reactor;
 
 import java.util.Map;
 import java.util.concurrent.Executor;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +22,8 @@ public final class SynchronousReactor implements Reactor {
     private final Object startedLock = new Object();
 
     private Map<String, List<Consumer<Event>>> observersMap = null;
-    private final Object observersMapLock = new Object();
+    private final Lock observersMapLock = new ReentrantLock(true); // fair lock to avoid starvation
+    // TODO: follow DRY regarding the locking and unlocking of the map, maybe a generic component that serves this purpose is appropriate 
 
     /**
      * Private no-args empty constructor.
@@ -54,7 +57,8 @@ public final class SynchronousReactor implements Reactor {
     public boolean register(final String eventType, final Consumer<Event> handler) throws IllegalArgumentException {
         if(null == eventType || null == handler)
             throw new IllegalArgumentException("Accepted a null argument.");
-        synchronized(observersMapLock){
+        this.observersMapLock.lock();
+        try {
             if(null == this.observersMap)
                 this.observersMap = new HashMap<>();
             List<Consumer<Event>> eventHandlers = this.observersMap.get(eventType);
@@ -64,6 +68,8 @@ public final class SynchronousReactor implements Reactor {
             }
             eventHandlers.add(handler);
             return true;
+        } finally {
+            this.observersMapLock.unlock();
         }
     }
 
@@ -79,7 +85,8 @@ public final class SynchronousReactor implements Reactor {
     public boolean unregister(final String eventType, final Consumer<Event> handler) throws IllegalArgumentException {
         if(null == eventType || null == handler)
             throw new IllegalArgumentException("Accepted a null argument.");
-        synchronized(observersMapLock){        
+        this.observersMapLock.lock();
+        try {        
             if(null != this.observersMap){
                 List<Consumer<Event>> eventHandlers = this.observersMap.get(eventType);
                 if(null != eventHandlers){
@@ -90,6 +97,8 @@ public final class SynchronousReactor implements Reactor {
                 }
             } 
             return false;
+        } finally {
+            this.observersMapLock.unlock();
         }
     }
 
@@ -127,8 +136,8 @@ public final class SynchronousReactor implements Reactor {
                 List<Consumer<Event>> eventHandlers = null;
 
                 if(null != event){
-                    // TODO: address the fact that the following locking may casue starvation of threads trying to register and unregister the reactor, maybe using fair reentrant lock
-                    synchronized(observersMapLock){
+                    this.observersMapLock.lock();
+                    try { 
                         if(null != this.observersMap){
                             eventHandlers = this.observersMap.get(event.type());
                             if(null != eventHandlers){
@@ -142,6 +151,8 @@ public final class SynchronousReactor implements Reactor {
                                 }
                             }
                         }
+                    } finally {
+                        this.observersMapLock.unlock();
                     }
                 }
 
