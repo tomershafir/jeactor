@@ -23,7 +23,6 @@ public final class SynchronousReactor implements Reactor {
 
     private Map<String, List<Consumer<Event>>> observersMap = null;
     private final Lock observersMapLock = new ReentrantLock(true); // fair lock to avoid starvation
-    // TODO: follow DRY regarding the locking and unlocking of the map, maybe a generic component that serves this purpose is appropriate 
 
     /**
      * Private no-args empty constructor.
