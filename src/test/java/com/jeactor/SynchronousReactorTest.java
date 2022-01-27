@@ -1,4 +1,4 @@
-package com.tomer.reactor;
+package com.jeactor;
 
 public class SynchronousReactorTest {
     
