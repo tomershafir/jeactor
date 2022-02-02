@@ -3,7 +3,7 @@ package com.jeactor;
 import java.util.function.Consumer;
 
 /**
- * Represents an event demultiplexor.
+ * Represents an event demultiplexor that consume events from event sources and supply events to the dispatcher.
  */
 public interface EventDemultiplexor extends Consumer<Event> {
     /**

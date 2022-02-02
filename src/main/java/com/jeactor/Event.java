@@ -1,8 +1,8 @@
 package com.jeactor;
 
 /**
- * Represents an event.
+ * Represents an event as a comparable object of a certain type.
  */
-interface Event {
+public interface Event extends Comparable<Event> {
     public abstract String type();
 }
