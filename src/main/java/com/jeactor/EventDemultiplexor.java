@@ -12,5 +12,5 @@ public interface EventDemultiplexor extends Consumer<Event> {
      * @return accepted event
      * @throws InterruptedException if interrupted while waiting     
      */
-    public abstract Event get() throws InterruptedException;
+    Event get() throws InterruptedException;
 }

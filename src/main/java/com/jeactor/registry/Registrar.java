@@ -13,7 +13,7 @@ public interface Registrar<K, V> {
      * @param key a key to which the accepted value is registered
      * @param value a value to register
      */
-    public abstract void register(K key, V value);
+    void register(K key, V value);
 
     /**
      * The method unregisters the accepted value with the accepted key.
@@ -21,5 +21,5 @@ public interface Registrar<K, V> {
      * @param key a key from which the accepted value is unregistered
      * @param value a value to unregister
      */
-    public abstract void unregister(K key, V value);
+    void unregister(K key, V value);
 }
