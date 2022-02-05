@@ -7,7 +7,7 @@ import java.util.concurrent.Executor;
  */
 final class SynchronousExecutor implements Executor {
     /**
-     * No-args empty constructor.
+     * Creates default synchronous executor.
      */
     SynchronousExecutor(){}
 
@@ -17,7 +17,7 @@ final class SynchronousExecutor implements Executor {
      * @param task a runnable task to execute 
      */
     @Override
-    public void execute(final Runnable task){
+    public void execute(final Runnable task) {
         task.run();
     }
 }
