@@ -5,11 +5,11 @@ import java.util.concurrent.Executor;
 /**
  * Stateless executer that executes task synchronously in the caller thread.
  */
-public final class StatelessSyncExecutor implements Executor {
+public final class SyncExecutor implements Executor { // no internal memory used for state so thread safe
     /**
      * Creates default synchronous executor.
      */
-    public StatelessSyncExecutor() {}
+    public SyncExecutor() {}
 
     /**
      * The method executes synchronously the sumbitted task.

@@ -1,6 +1,6 @@
 package com.jeactor;
 
-import com.jeactor.concurrent.StatelessSyncExecutor;
+import com.jeactor.concurrent.SyncExecutor;
 import com.jeactor.demultiplexor.PriorityBlockingDemultiplexor;
 
 /**
@@ -21,7 +21,7 @@ public final class SynchronousBlockingReactorFactory implements ReactorFactory {
      */
     public synchronized Reactor get() {
         if(null == reactor)
-            reactor = new ConcurrentReactor(new StatelessSyncExecutor(), new PriorityBlockingDemultiplexor());
+            reactor = new ConcurrentReactor(new SyncExecutor(), new PriorityBlockingDemultiplexor());
         return reactor;
     }
 }
