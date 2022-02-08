@@ -1,15 +1,15 @@
-package com.jeactor;
+package com.jeactor.concurrent;
 
 import java.util.concurrent.Executor;
 
 /**
- * An executer that executes task synchronously in the caller thread.
+ * Stateless executer that executes task synchronously in the caller thread.
  */
-final class SynchronousExecutor implements Executor {
+public final class StatelessSyncExecutor implements Executor {
     /**
      * Creates default synchronous executor.
      */
-    SynchronousExecutor(){}
+    public StatelessSyncExecutor() {}
 
     /**
      * The method executes synchronously the sumbitted task.
