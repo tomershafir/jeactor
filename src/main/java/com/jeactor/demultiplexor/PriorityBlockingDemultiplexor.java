@@ -8,7 +8,7 @@ import com.jeactor.Event;
 /**
  * Blocking thread-safe implementation of an event demultiplexor that supports prioritization.
  */
-public final class PriorityBlockingDemultiplexor implements EventDemultiplexor {
+public class PriorityBlockingDemultiplexor implements EventDemultiplexor {
     private final BlockingQueue<Event> priorityBlockingQueue; // BlockingQueue implementations are thread-safe for single-element operations, and here we have only single element operations
 
     /**

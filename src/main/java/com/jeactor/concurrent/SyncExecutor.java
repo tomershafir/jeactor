@@ -1,11 +1,9 @@
 package com.jeactor.concurrent;
 
-import java.util.concurrent.Executor;
-
 /**
- * Stateless executer that executes task synchronously in the caller thread.
+ * An executer that executes task synchronously in the caller thread.
  */
-public final class SyncExecutor implements Executor { // no internal memory used for state so thread safe
+public class SyncExecutor implements ConcurrentExecutor { // no internal memory used for state so thread safe
     /**
      * Creates default synchronous executor.
      */

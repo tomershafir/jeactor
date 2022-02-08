@@ -6,7 +6,7 @@ import com.jeactor.demultiplexor.PriorityBlockingDemultiplexor;
 /**
  * Thread-safe factory that produce a singleton synchronous reactor.
  */
-public final class SynchronousBlockingReactorFactory implements ReactorFactory {
+public class SynchronousBlockingReactorFactory implements ReactorFactory {
     private static ConcurrentReactor reactor = null;
 
     /**
@@ -20,7 +20,7 @@ public final class SynchronousBlockingReactorFactory implements ReactorFactory {
      * @return a singleton synchronous reactor
      */
     public synchronized Reactor get() {
-        if(null == reactor)
+        if (null == reactor)
             reactor = new ConcurrentReactor(new SyncExecutor(), new PriorityBlockingDemultiplexor());
         return reactor;
     }

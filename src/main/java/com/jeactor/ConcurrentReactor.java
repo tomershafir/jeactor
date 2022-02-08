@@ -1,7 +1,6 @@
 package com.jeactor;
 
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.HashMap;
@@ -9,14 +8,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.jeactor.concurrent.ConcurrentExecutor;
 import com.jeactor.demultiplexor.EventDemultiplexor;
 
 /**
  * Basic thread-safe reactor implementation.
  */
-final class ConcurrentReactor implements Reactor {
-    private final EventDemultiplexor demultiplexor;
-    private final Executor taskExecutor;
+class ConcurrentReactor implements Reactor { // top service layer, validations should be included here
+    // aliasing is used, necessary where we use collections, need to be careful and avoid unwanted side effects
+    private final EventDemultiplexor eventDemultiplexor;
+    private final ConcurrentExecutor taskExecutor;
     
     private boolean started;
     private final Object startedLock = new Object();
@@ -25,38 +26,42 @@ final class ConcurrentReactor implements Reactor {
     private final Lock observersMapLock = new ReentrantLock(true); // fair lock to avoid starvation
 
     /**
-     * Private no-args empty constructor.
+     * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
+     * 
+     * @param taskExecutor a concurrent executor to use for execution of event handlers when events are dispatched
+     * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
      */
-    ConcurrentReactor(final Executor executor, final EventDemultiplexor eventDemultiplexor) {
-        this.demultiplexor = eventDemultiplexor; //aliasing
+    ConcurrentReactor(final ConcurrentExecutor taskExecutor, final EventDemultiplexor eventDemultiplexor) {
+        this.eventDemultiplexor = eventDemultiplexor; 
         this.started = false;
-        this.taskExecutor = executor; //aliasing
+        this.taskExecutor = taskExecutor; 
     }
 
     /**
      * The method subscribes an handler with an event type.
      * 
-     * @param eventType
-     * @param handler
+     * @param eventType string event type identifier
+     * @param handler a consumer of event to associate with the supplied event type
      * @return boolean value indicating wether the subscription succeeded or not
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException when null argument is supplied
      */
     @Override
     public void register(final String eventType, final Consumer<Event> handler) throws IllegalArgumentException {
         if(null == eventType || null == handler)
             throw new IllegalArgumentException("Accepted a null argument.");
-        this.observersMapLock.lock();
+
+        observersMapLock.lock();
         try {
-            if(null == this.observersMap)
-                this.observersMap = new HashMap<>();
-            List<Consumer<Event>> eventHandlers = this.observersMap.get(eventType);
-            if(null == eventHandlers){
-                eventHandlers = new LinkedList<Consumer<Event>>();
-                this.observersMap.put(eventType, eventHandlers);
+            if (null == observersMap)
+                observersMap = new HashMap<>();
+            List<Consumer<Event>> eventHandlers = observersMap.get(eventType);
+            if (null == eventHandlers) {
+                eventHandlers = new LinkedList<Consumer<Event>>(); // linked list is suitable for FIFO behaviour of service handler implemented in this reactor implementation
+                observersMap.put(eventType, eventHandlers);
             }
             eventHandlers.add(handler);
         } finally {
-            this.observersMapLock.unlock();
+            observersMapLock.unlock();
         }
     }
 
@@ -66,38 +71,40 @@ final class ConcurrentReactor implements Reactor {
      * @param eventType 
      * @param handler
      * @return boolean value indicating wether the unsubscription succeeded or not
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException when null argument is supplied
      */
     @Override
     public void unregister(final String eventType, final Consumer<Event> handler) throws IllegalArgumentException {
-        if(null == eventType || null == handler)
+        if (null == eventType || null == handler)
             throw new IllegalArgumentException("Accepted a null argument.");
-        this.observersMapLock.lock();
+
+        observersMapLock.lock();
         try {        
-            if(null != this.observersMap){
-                List<Consumer<Event>> eventHandlers = this.observersMap.get(eventType);
-                if(null != eventHandlers){
+            if (null != observersMap) {
+                List<Consumer<Event>> eventHandlers = observersMap.get(eventType);
+                if (null != eventHandlers) {
                     eventHandlers.remove(handler); // removes an element e such that (handler==null ? e==null : handler.equals(e)), if this list contains such an element
                     if(eventHandlers.isEmpty())
-                        this.observersMap.remove(eventType);
+                        observersMap.remove(eventType);
                 }
             } 
         } finally {
-            this.observersMapLock.unlock();
+            observersMapLock.unlock();
         }
     }
 
     /**
      * The method accepts an event to be processed into the reactor.
      * 
-     * @param event
-     * @throws IllegalArgumentException 
+     * @param event an event be processed
+     * @throws IllegalArgumentException when null argument is supplied
      */
     @Override
     public void accept(final Event event) {
-        if(null == event)
-            throw new IllegalArgumentException("Accepted a null argument.");        
-        this.demultiplexor.accept(event);
+        if (null == event)
+            throw new IllegalArgumentException("Accepted a null argument.");     
+
+        eventDemultiplexor.accept(event);
     }
 
     /**
@@ -107,29 +114,28 @@ final class ConcurrentReactor implements Reactor {
      */
     @Override
     public void run() {
-        synchronized(startedLock){
-            if(this.started)
+        synchronized(startedLock) {
+            if (started)
                 return;
-            this.started = true;
+            started = true;
         }
 
         // only the first thread that acuired startedLock's lock executes the main loop
         try {
-            while(true){ // main loop
-                // the demultiplexor waits for events
-                final Event event = this.demultiplexor.get();
+            while (true) { // main loop
+                final Event event = eventDemultiplexor.get();
                 List<Consumer<Event>> eventHandlers = null;
 
-                if(null != event){
-                    this.observersMapLock.lock();
+                if (null != event) {
+                    observersMapLock.lock();
                     try { 
-                        if(null != this.observersMap){
-                            eventHandlers = this.observersMap.get(event.type());
-                            if(null != eventHandlers){
-                                for(final Consumer<Event> handler : eventHandlers){
+                        if (null != observersMap) {
+                            eventHandlers = observersMap.get(event.type());
+                            if (null != eventHandlers) {
+                                for (final Consumer<Event> handler : eventHandlers) {
                                     taskExecutor.execute(new Runnable() {
                                         @Override
-                                        public void run(){
+                                        public void run() {
                                             handler.accept(event);
                                         }
                                     });
@@ -137,7 +143,7 @@ final class ConcurrentReactor implements Reactor {
                             }
                         }
                     } finally {
-                        this.observersMapLock.unlock();
+                        observersMapLock.unlock();
                     }
                 }
 
