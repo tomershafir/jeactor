@@ -1,4 +1,4 @@
-package com.jeactor.demultiplexor;
+package com.jeactor.util.demultiplexor;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -8,7 +8,7 @@ import com.jeactor.Event;
 /**
  * Blocking thread-safe implementation of an event demultiplexor that supports prioritization.
  */
-public class PriorityBlockingDemultiplexor implements EventDemultiplexor {
+public class PriorityBlockingDemultiplexor implements EventDemultiplexor { // intemediate service layer
     private final BlockingQueue<Event> priorityBlockingQueue; // BlockingQueue implementations are thread-safe for single-element operations, and here we have only single element operations
 
     /**

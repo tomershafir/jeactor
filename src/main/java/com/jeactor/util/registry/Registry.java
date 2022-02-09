@@ -1,4 +1,4 @@
-package com.jeactor.registry;
+package com.jeactor.util.registry;
 
 /**
  * An interface that represents an object that supports registration of values to keys.
@@ -7,7 +7,7 @@ package com.jeactor.registry;
  * @param <K> type of keys to which values are registered
  * @param <V> type of values to be registered
  */
-public interface Registrar<K, V> {
+public interface Registry<K, V> {
     /**
      * The method registers the accepted value with the accepted key.
      * 

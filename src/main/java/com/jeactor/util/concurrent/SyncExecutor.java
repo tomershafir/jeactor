@@ -1,9 +1,9 @@
-package com.jeactor.concurrent;
+package com.jeactor.util.concurrent;
 
 /**
  * An executer that executes task synchronously in the caller thread.
  */
-public class SyncExecutor implements ConcurrentExecutor { // no internal memory used for state so thread safe
+public class SyncExecutor implements ConcurrentExecutor { // no internal memory used for state so thread safe // intemediate service layer
     /**
      * Creates default synchronous executor.
      */

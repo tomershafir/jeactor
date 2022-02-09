@@ -1,4 +1,4 @@
-package com.jeactor.demultiplexor;
+package com.jeactor.util.demultiplexor;
 
 import java.util.function.Consumer;
 

@@ -8,14 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.jeactor.concurrent.ConcurrentExecutor;
-import com.jeactor.demultiplexor.EventDemultiplexor;
+import com.jeactor.util.concurrent.ConcurrentExecutor;
+import com.jeactor.util.demultiplexor.EventDemultiplexor;
 
 /**
  * Basic thread-safe reactor implementation.
  */
-class ConcurrentReactor implements Reactor { // top service layer, validations should be included here
-    // aliasing is used, necessary where we use collections, need to be careful and avoid unwanted side effects
+class ConcurrentReactor implements Reactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
     private final EventDemultiplexor eventDemultiplexor;
     private final ConcurrentExecutor taskExecutor;
     

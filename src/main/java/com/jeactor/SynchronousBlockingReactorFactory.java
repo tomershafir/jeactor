@@ -1,12 +1,12 @@
 package com.jeactor;
 
-import com.jeactor.concurrent.SyncExecutor;
-import com.jeactor.demultiplexor.PriorityBlockingDemultiplexor;
+import com.jeactor.util.concurrent.SyncExecutor;
+import com.jeactor.util.demultiplexor.PriorityBlockingDemultiplexor;
 
 /**
  * Thread-safe factory that produce a singleton synchronous reactor.
  */
-public class SynchronousBlockingReactorFactory implements ReactorFactory {
+public class SynchronousBlockingReactorFactory implements ReactorFactory { // top service layer
     private static ConcurrentReactor reactor = null;
 
     /**

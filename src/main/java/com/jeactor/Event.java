@@ -1,8 +1,23 @@
 package com.jeactor;
 
 /**
- * Represents an event as a comparable object of a certain type.
+ * Represents an immutable event.
  */
-public interface Event extends Comparable<Event> {
-    String type();
+public final class Event implements Comparable<Event> { // top service layer
+    private final String eventType;
+
+    public Event() {
+        
+    }
+
+    /**
+     * The method returns the type of this event.
+     * 
+     * @return a string type of this event
+     */
+    public String eventType() {
+        return eventType;
+    }
+
+
 }
