@@ -2,7 +2,8 @@ package com.jeactor;
 
 /**
  * Factory abstraction that produce reactor instances.
- * All implementing classes of this interface are thread-safe.
+ * 
+ * <p>All implementing classes of this interface are thread-safe and maintain a singleton instance.
  */
 public interface ReactorFactory {
     /**
@@ -10,5 +11,5 @@ public interface ReactorFactory {
      * 
      * @return a reactor instance
      */
-    Reactor get();
+    ProxyReactor get();
 }

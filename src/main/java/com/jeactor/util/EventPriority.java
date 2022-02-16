@@ -3,39 +3,24 @@ package com.jeactor.util;
 /**
  * Represents event priority for the reactor.
  */
-public enum EventPriority {
+public enum EventPriority { // ORDER OF CONSTANTS MATTERS, BECAUSE the natural order implemented by the platform is the order in which the constants are declared
     /**
      * Low event priority.
      */
-    LOW(0),
+    LOW,
 
     /**
      * Medium event priority.
      */
-    MEDIUM(1),
+    MEDIUM,
 
     /**
      * High event priority.
      */
-    HIGH(2),
+    HIGH,
 
     /**
      * Critical event priority.
      */
-    CRITICAL(3);
-
-    private final int priority;
-
-    private EventPriority(final int priority) {
-        this.priority = priority;
-    }
-
-    /**
-     * The method returns an integer priority associated with the event priority constant.
-     * 
-     * @return an integer priority associated with the event priority constant
-     */
-    public int priority() {
-        return priority;
-    }
+    CRITICAL;
 }

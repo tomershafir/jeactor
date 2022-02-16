@@ -1,39 +1,39 @@
 package com.jeactor;
 
-import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import com.jeactor.util.concurrent.ConcurrentExecutor;
 import com.jeactor.util.demultiplexor.EventDemultiplexor;
+import com.jeactor.util.registry.RegistryService;
 
 /**
  * Basic thread-safe reactor implementation.
  */
-class ConcurrentReactor implements Reactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
+class ConcurrentReactor implements ProxyReactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful from eithin and from without(factory classes) and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
     private final EventDemultiplexor eventDemultiplexor;
     private final ConcurrentExecutor taskExecutor;
     
     private boolean started;
-    private final Object startedLock = new Object();
-
-    private Map<String, List<Consumer<Event>>> observersMap = null;
-    private final Lock observersMapLock = new ReentrantLock(true); // fair lock to avoid starvation
+    private final Object startedSynchorinzaionObject = new Object();
+    
+    private final RegistryService<String, Consumer<Event>> eventRegistry; // instance created by factory cannot be exposed or we have thread synchronization problem
+    private final Lock registryLock = new ReentrantLock(true); // fair lock to avoid starvation
 
     /**
      * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
      * 
      * @param taskExecutor a concurrent executor to use for execution of event handlers when events are dispatched
      * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
+     * @param eventRegistry a registry service object to be used by the reactor
      */
-    ConcurrentReactor(final ConcurrentExecutor taskExecutor, final EventDemultiplexor eventDemultiplexor) {
+    ConcurrentReactor(final ConcurrentExecutor taskExecutor, final EventDemultiplexor eventDemultiplexor, final RegistryService<String, Consumer<Event>> eventRegistry) {
         this.eventDemultiplexor = eventDemultiplexor; 
         this.started = false;
-        this.taskExecutor = taskExecutor; 
+        this.taskExecutor = taskExecutor;
+        this.eventRegistry =  eventRegistry;
     }
 
     /**
@@ -42,25 +42,18 @@ class ConcurrentReactor implements Reactor { // top service layer, validations s
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
      * @return boolean value indicating wether the subscription succeeded or not
-     * @throws IllegalArgumentException when null argument is supplied
+     * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void register(final String eventType, final Consumer<Event> handler) throws IllegalArgumentException {
+    public void register(final String eventType, final Consumer<Event> handler) throws NullPointerException {
         if(null == eventType || null == handler)
-            throw new IllegalArgumentException("Accepted a null argument.");
+            throw new NullPointerException();
 
-        observersMapLock.lock();
+        registryLock.lock();
         try {
-            if (null == observersMap)
-                observersMap = new HashMap<>();
-            List<Consumer<Event>> eventHandlers = observersMap.get(eventType);
-            if (null == eventHandlers) {
-                eventHandlers = new LinkedList<Consumer<Event>>(); // linked list is suitable for FIFO behaviour of service handler implemented in this reactor implementation
-                observersMap.put(eventType, eventHandlers);
-            }
-            eventHandlers.add(handler);
+            eventRegistry.register(eventType, handler);
         } finally {
-            observersMapLock.unlock();
+            registryLock.unlock();
         }
     }
 
@@ -70,25 +63,18 @@ class ConcurrentReactor implements Reactor { // top service layer, validations s
      * @param eventType 
      * @param handler
      * @return boolean value indicating wether the unsubscription succeeded or not
-     * @throws IllegalArgumentException when null argument is supplied
+     * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void unregister(final String eventType, final Consumer<Event> handler) throws IllegalArgumentException {
+    public void unregister(final String eventType, final Consumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
-            throw new IllegalArgumentException("Accepted a null argument.");
+            throw new NullPointerException();
 
-        observersMapLock.lock();
+        registryLock.lock();
         try {        
-            if (null != observersMap) {
-                List<Consumer<Event>> eventHandlers = observersMap.get(eventType);
-                if (null != eventHandlers) {
-                    eventHandlers.remove(handler); // removes an element e such that (handler==null ? e==null : handler.equals(e)), if this list contains such an element
-                    if(eventHandlers.isEmpty())
-                        observersMap.remove(eventType);
-                }
-            } 
+            eventRegistry.unregister(eventType, handler);
         } finally {
-            observersMapLock.unlock();
+            registryLock.unlock();
         }
     }
 
@@ -96,40 +82,42 @@ class ConcurrentReactor implements Reactor { // top service layer, validations s
      * The method accepts an event to be processed into the reactor.
      * 
      * @param event an event be processed
-     * @throws IllegalArgumentException when null argument is supplied
+     * @throws NullPointerException when null argument is supplied
      */
     @Override
     public void accept(final Event event) {
         if (null == event)
-            throw new IllegalArgumentException("Accepted a null argument.");     
+            throw new NullPointerException();     
 
         eventDemultiplexor.accept(event);
     }
 
     /**
      * The method starts the main event loop of the reactor within the current thread.
-     * To stop the reactor, interrupt the executor thread.
-     * If the singleton reactor has already been started by a thread within the jvm process, calling run() has no effect. 
+     * 
+     * <p>To stop the reactor, interrupt the executor thread.
+     * 
+     * <p>If this reactor has already been started by a thread within the jvm process, calling run() has no effect. 
      */
     @Override
     public void run() {
-        synchronized(startedLock) {
+        synchronized(startedSynchorinzaionObject) {
             if (started)
                 return;
             started = true;
         }
 
-        // only the first thread that acuired startedLock's lock executes the main loop
+        // only the first thread that acuired startedSynchorinzableObject's lock executes the main loop
         try {
             while (true) { // main loop
                 final Event event = eventDemultiplexor.get();
-                List<Consumer<Event>> eventHandlers = null;
+                Collection<Consumer<Event>> eventHandlers = null;
 
                 if (null != event) {
-                    observersMapLock.lock();
+                    registryLock.lock();
                     try { 
-                        if (null != observersMap) {
-                            eventHandlers = observersMap.get(event.type());
+                        if (null != eventRegistry) {
+                            eventHandlers = eventRegistry.getRegistered(event.eventType());
                             if (null != eventHandlers) {
                                 for (final Consumer<Event> handler : eventHandlers) {
                                     taskExecutor.execute(new Runnable() {
@@ -142,7 +130,7 @@ class ConcurrentReactor implements Reactor { // top service layer, validations s
                             }
                         }
                     } finally {
-                        observersMapLock.unlock();
+                        registryLock.unlock();
                     }
                 }
 

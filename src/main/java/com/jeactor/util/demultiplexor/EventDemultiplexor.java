@@ -6,7 +6,8 @@ import com.jeactor.Event;
 
 /**
  * Represents an event demultiplexor that consume events from event sources and supply events to the dispatcher.
- * All implementing classes of this interface are thread-safe.
+ * 
+ * <p>All implementing classes of this interface are thread-safe.
  */
 public interface EventDemultiplexor extends Consumer<Event> {
     /**
