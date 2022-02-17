@@ -1,4 +1,4 @@
-package com.jeactor;
+package com.jeactor.concurrent;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.locks.Lock;
@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import com.jeactor.util.demultiplexor.ConcurrentEventDemultiplexor;
-import com.jeactor.util.registry.ConcurrentRegistryService;
+import com.jeactor.concurrent.util.demultiplexor.ConcurrentEventDemultiplexor;
+import com.jeactor.concurrent.util.registry.ConcurrentRegistryService;
 
 /**
  * Basic thread-safe reactor implementation.

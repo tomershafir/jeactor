@@ -1,4 +1,4 @@
-package com.jeactor.util.registry;
+package com.jeactor.concurrent.util.registry;
 
 /**
  * An interface that represents an object that supports registration of values to keys.

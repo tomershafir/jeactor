@@ -1,8 +1,8 @@
-package com.jeactor.util.demultiplexor;
+package com.jeactor.concurrent.util.demultiplexor;
 
 import java.util.function.Consumer;
 
-import com.jeactor.Event;
+import com.jeactor.concurrent.Event;
 
 /**
  * Represents an event demultiplexor that consume events from event sources and supply events to the dispatcher.

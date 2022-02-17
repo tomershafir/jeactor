@@ -1,9 +1,9 @@
-package com.jeactor.util.demultiplexor;
+package com.jeactor.concurrent.util.demultiplexor;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import com.jeactor.Event;
+import com.jeactor.concurrent.Event;
 
 /**
  * Blocking thread-safe implementation of an event demultiplexor that supports prioritization.

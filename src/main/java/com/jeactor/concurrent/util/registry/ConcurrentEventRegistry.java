@@ -1,4 +1,4 @@
-package com.jeactor.util.registry;
+package com.jeactor.concurrent.util.registry;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.jeactor.Event;
+import com.jeactor.concurrent.Event;
 
 /**
  * Non thread-safe registry that manages the subscription of event consumers to event types.

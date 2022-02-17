@@ -1,4 +1,4 @@
-package com.jeactor;
+package com.jeactor.concurrent;
 
 import java.util.Objects;
 
