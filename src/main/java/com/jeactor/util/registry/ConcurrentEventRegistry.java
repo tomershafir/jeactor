@@ -12,13 +12,13 @@ import com.jeactor.Event;
 /**
  * Non thread-safe registry that manages the subscription of event consumers to event types.
  */
-public class EventRegistry implements Registry<String, Consumer<Event>> {
+public class ConcurrentEventRegistry implements ConcurrentRegistryService<String, Consumer<Event>> {
     private final Map<String, List<Consumer<Event>>> registryData;
 
     /**
      * Creates empty event registry. 
      */
-    public EventRegistry() {
+    public ConcurrentEventRegistry() {
         registryData = new HashMap<>();
     }
 

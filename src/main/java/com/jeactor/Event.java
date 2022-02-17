@@ -2,8 +2,6 @@ package com.jeactor;
 
 import java.util.Objects;
 
-import com.jeactor.util.EventPriority;
-
 /**
  * Represents an immutable event.
  */

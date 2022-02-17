@@ -6,20 +6,20 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import com.jeactor.util.demultiplexor.EventDemultiplexor;
-import com.jeactor.util.registry.RegistryService;
+import com.jeactor.util.demultiplexor.ConcurrentEventDemultiplexor;
+import com.jeactor.util.registry.ConcurrentRegistryService;
 
 /**
  * Basic thread-safe reactor implementation.
  */
-class ConcurrentReactor implements ProxyReactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful from eithin and from without(factory classes) and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
-    private final EventDemultiplexor eventDemultiplexor;
+class ConcurrentReactor implements ConcurrentProxyReactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful from eithin and from without(factory classes) and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
+    private final ConcurrentEventDemultiplexor eventDemultiplexor;
     private final Executor taskExecutor;
     
     private boolean started;
     private final Object startedSynchorinzaionObject = new Object();
     
-    private final RegistryService<String, Consumer<Event>> eventRegistry; // instance created by factory cannot be exposed or we have thread synchronization problem
+    private final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry; // instance created by factory cannot be exposed or we have thread synchronization problem
     private final Lock registryLock = new ReentrantLock(true); // fair lock to avoid starvation
 
     /**
@@ -29,7 +29,7 @@ class ConcurrentReactor implements ProxyReactor { // top service layer, validati
      * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
      * @param eventRegistry a registry service object to be used by the reactor
      */
-    ConcurrentReactor(final Executor taskExecutor, final EventDemultiplexor eventDemultiplexor, final RegistryService<String, Consumer<Event>> eventRegistry) {
+    ConcurrentReactor(final Executor taskExecutor, final ConcurrentEventDemultiplexor eventDemultiplexor, final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry) {
         this.eventDemultiplexor = eventDemultiplexor; 
         this.started = false;
         this.taskExecutor = taskExecutor;

@@ -5,11 +5,11 @@ package com.jeactor;
  * 
  * <p>All implementing classes of this interface are thread-safe and maintain a singleton instance.
  */
-public interface ReactorFactory {
+public interface ConcurrentReactorFactory {
     /**
      * The method returns a reactor product.
      * 
      * @return a reactor instance
      */
-    ProxyReactor get();
+    ConcurrentProxyReactor get();
 }

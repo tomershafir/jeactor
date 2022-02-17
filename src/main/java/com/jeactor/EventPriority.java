@@ -1,4 +1,4 @@
-package com.jeactor.util;
+package com.jeactor;
 
 /**
  * Represents event priority for the reactor.

@@ -8,7 +8,7 @@ import java.util.Collection;
  * @param <K> type of keys to which values are registered
  * @param <V> type of values to be registered
  */
-public interface RegistryService<K, V> extends Registry<K, V> {
+public interface ConcurrentRegistryService<K, V> extends ConcurrentRegistry<K, V> {
     /**
      * The method returns a collection of objects registered with the accepted key.
      * 

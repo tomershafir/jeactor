@@ -9,7 +9,7 @@ import com.jeactor.Event;
  * 
  * <p>All implementing classes of this interface are thread-safe.
  */
-public interface EventDemultiplexor extends Consumer<Event> {
+public interface ConcurrentEventDemultiplexor extends Consumer<Event> {
     /**
      * The method returns an accepted event.
      * 

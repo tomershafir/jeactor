@@ -8,7 +8,7 @@ package com.jeactor.util.registry;
  * @param <K> type of keys to which values are registered
  * @param <V> type of values to be registered
  */
-public interface Registry<K, V> {
+public interface ConcurrentRegistry<K, V> {
     /**
      * The method registers the accepted value with the accepted key.
      * 
