@@ -7,18 +7,23 @@ import java.util.Objects;
  */
 public final class Event implements Comparable<Event> { // top service layer
     private final String eventType;
-    private final EventPriority eventPriority; 
+    private final EventPriority eventPriority;
+    private final EventPattern eventPattern;
 
     /**
      * Creates an immutable event of the accepted type and with the accepted priority.
      * 
      * @param eventType a string type of the event
      * @param eventPriority an EventPriority constant that represents the priority of the event
+     * @param eventPattern an EventPattern describing the pattern of the event
      * @throws NullPointerException when null argument is supplied
      */
-    Event(final String eventType, final EventPriority eventPriority) {
+    Event(final String eventType, final EventPriority eventPriority, final EventPattern eventPattern) {
+        if (null == eventType || null == eventPriority || null == eventPattern)
+            throw new NullPointerException();
         this.eventType = eventType;
         this.eventPriority = eventPriority;
+        this.eventPattern = eventPattern;
     }
 
     /**
