@@ -1,11 +1,11 @@
 package com.jeactor;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import com.jeactor.util.concurrent.ConcurrentExecutor;
 import com.jeactor.util.demultiplexor.EventDemultiplexor;
 import com.jeactor.util.registry.RegistryService;
 
@@ -14,7 +14,7 @@ import com.jeactor.util.registry.RegistryService;
  */
 class ConcurrentReactor implements ProxyReactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful from eithin and from without(factory classes) and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
     private final EventDemultiplexor eventDemultiplexor;
-    private final ConcurrentExecutor taskExecutor;
+    private final Executor taskExecutor;
     
     private boolean started;
     private final Object startedSynchorinzaionObject = new Object();
@@ -29,7 +29,7 @@ class ConcurrentReactor implements ProxyReactor { // top service layer, validati
      * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
      * @param eventRegistry a registry service object to be used by the reactor
      */
-    ConcurrentReactor(final ConcurrentExecutor taskExecutor, final EventDemultiplexor eventDemultiplexor, final RegistryService<String, Consumer<Event>> eventRegistry) {
+    ConcurrentReactor(final Executor taskExecutor, final EventDemultiplexor eventDemultiplexor, final RegistryService<String, Consumer<Event>> eventRegistry) {
         this.eventDemultiplexor = eventDemultiplexor; 
         this.started = false;
         this.taskExecutor = taskExecutor;
