@@ -1,4 +1,4 @@
-package com.jeactor.concurrent.util.registry;
+package com.jeactor.concurrent.registry;
 
 import java.util.Collection;
 

@@ -2,7 +2,7 @@ package com.jeactor.concurrent;
 
 import java.util.function.Consumer;
 
-import com.jeactor.concurrent.util.registry.ConcurrentRegistry;
+import com.jeactor.concurrent.registry.ConcurrentRegistry;
 
 /**
  * An abstraction of a reactor. Generally a reactor should support init, register, unregister, run, shutdown and accept operations.

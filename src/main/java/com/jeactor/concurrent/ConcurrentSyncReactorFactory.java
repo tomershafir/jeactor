@@ -1,7 +1,7 @@
 package com.jeactor.concurrent;
 
-import com.jeactor.concurrent.util.demultiplexor.ConcurrentPriorityBlockingDemultiplexor;
-import com.jeactor.concurrent.util.registry.ConcurrentEventRegistry;
+import com.jeactor.concurrent.demultiplexor.ConcurrentPriorityBlockingDemultiplexor;
+import com.jeactor.concurrent.registry.ConcurrentEventRegistry;
 
 /**
  * Thread-safe factory that produce a singleton synchronous reactor.

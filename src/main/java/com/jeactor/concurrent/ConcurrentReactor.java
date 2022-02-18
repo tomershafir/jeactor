@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import com.jeactor.concurrent.util.demultiplexor.ConcurrentEventDemultiplexor;
-import com.jeactor.concurrent.util.registry.ConcurrentRegistryService;
+import com.jeactor.concurrent.demultiplexor.ConcurrentEventDemultiplexor;
+import com.jeactor.concurrent.registry.ConcurrentRegistryService;
 
 /**
  * Basic thread-safe reactor implementation.
