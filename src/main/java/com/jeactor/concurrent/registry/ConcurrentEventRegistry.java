@@ -59,7 +59,10 @@ public class ConcurrentEventRegistry implements ConcurrentRegistryService<String
         if (null != registryData) {
             List<Consumer<Event>> eventHandlers = registryData.get(eventType);
             if (null != eventHandlers) {
-                eventHandlers.remove(handler); // removes an element e such that (handler==null ? e==null : handler.equals(e)), if this list contains such an element
+
+                // removes an element e such that (handler==null ? e==null : handler.equals(e)), if this list contains such an element
+                eventHandlers.remove(handler); 
+                
                 if(eventHandlers.isEmpty())
                     registryData.remove(eventType);
             }

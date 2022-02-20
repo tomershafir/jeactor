@@ -6,21 +6,28 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import com.jeactor.concurrent.demultiplexor.ConcurrentEventDemultiplexor;
+import com.jeactor.concurrent.demultiplexor.ConcurrentEventDemux;
 import com.jeactor.concurrent.registry.ConcurrentRegistryService;
 
 /**
  * Basic thread-safe reactor implementation.
  */
-class ConcurrentReactor implements ConcurrentProxyReactor { // top service layer, validations should be included here // aliasing is used, necessary where we use collections, need to be careful from eithin and from without(factory classes) and avoid unwanted side effects // this reactor implementation should include only main loop and wirings to be SOLID
-    private final ConcurrentEventDemultiplexor eventDemultiplexor;
+class ConcurrentReactor implements AbstractConcurrentProxyReactor {
+    // top service layer, validations should be included here 
+    // aliasing is used, necessary where we use collections, need to be careful from within and from without(factory classes) and avoid unwanted side effects 
+    // this reactor implementation should include only main loop and wirings to be SOLID
+
+    private final ConcurrentEventDemux eventDemultiplexor;
     private final Executor taskExecutor;
     
     private boolean started;
     private final Object startedSynchorinzaionObject = new Object();
     
-    private final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry; // instance created by factory cannot be exposed or we have thread synchronization problem
-    private final Lock registryLock = new ReentrantLock(true); // fair lock to avoid starvation
+    // instance created by factory cannot be exposed or we have thread synchronization problem
+    private final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry;
+
+    // fair lock to avoid starvation, but bad effect on performance due to sort exec, also doesnt affect thread shceduling and is not honored by tryLock
+    private final Lock registryLock = new ReentrantLock(true); 
 
     /**
      * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
@@ -29,7 +36,7 @@ class ConcurrentReactor implements ConcurrentProxyReactor { // top service layer
      * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
      * @param eventRegistry a registry service object to be used by the reactor
      */
-    ConcurrentReactor(final Executor taskExecutor, final ConcurrentEventDemultiplexor eventDemultiplexor, final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry) {
+    ConcurrentReactor(final Executor taskExecutor, final ConcurrentEventDemux eventDemultiplexor, final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry) {
         this.eventDemultiplexor = eventDemultiplexor; 
         this.started = false;
         this.taskExecutor = taskExecutor;
@@ -46,7 +53,7 @@ class ConcurrentReactor implements ConcurrentProxyReactor { // top service layer
      */
     @Override
     public void register(final String eventType, final Consumer<Event> handler) throws NullPointerException {
-        if(null == eventType || null == handler)
+        if (null == eventType || null == handler)
             throw new NullPointerException();
 
         registryLock.lock();
@@ -108,8 +115,9 @@ class ConcurrentReactor implements ConcurrentProxyReactor { // top service layer
         }
 
         // only the first thread that acuired startedSynchorinzableObject's lock executes the main loop
+        
         try {
-            while (true) { // main loop
+            while (true) {
                 final Event event = eventDemultiplexor.get();
                 Collection<Consumer<Event>> eventHandlers = null;
 
@@ -134,11 +142,13 @@ class ConcurrentReactor implements ConcurrentProxyReactor { // top service layer
                     }
                 }
 
-                if (Thread.interrupted())  // clears interrupted status
+                // clears interrupted status
+                if (Thread.interrupted())  
                     throw new InterruptedException(); 
             }
         } catch(InterruptedException e){
             System.err.println(e.getMessage());
+            
             // preserve interrupt status
             Thread.currentThread().interrupt();
         }

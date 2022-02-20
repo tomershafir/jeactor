@@ -3,7 +3,9 @@ package com.jeactor.concurrent;
 /**
  * Represents event priority for the reactor.
  */
-public enum EventPriority { // ORDER OF CONSTANTS MATTERS, BECAUSE the natural order implemented by the platform is the order in which the constants are declared
+public enum EventPriority {
+    // ORDER OF CONSTANTS MATTERS, BECAUSE the natural order implemented by the platform is the order in which the constants are declared
+    
     /**
      * Low event priority.
      */

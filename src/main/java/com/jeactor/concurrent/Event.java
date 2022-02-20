@@ -5,7 +5,9 @@ import java.util.Objects;
 /**
  * Represents an immutable event.
  */
-public final class Event implements Comparable<Event> { // top service layer
+public final class Event implements Comparable<Event> {
+    // top service layer
+    
     private final String eventType;
     private final EventPriority eventPriority;
     private final EventPattern eventPattern;
@@ -36,6 +38,33 @@ public final class Event implements Comparable<Event> { // top service layer
      */
     public String eventType() {
         return eventType;
+    }
+
+    /**
+     * The method returns the priority of this event.
+     * 
+     * @return an EventPriority of this event
+     */
+    public EventPriority eventPriority() {
+        return eventPriority;
+    }
+
+    /**
+     * The method returns the pattern of this event.
+     * 
+     * @return an EventPattern of this event
+     */
+    public EventPattern eventPattern() {
+        return eventPattern;
+    }
+
+    /**
+     * The method returns the payload of this event.
+     * 
+     * @return a json string that forms of this event
+     */
+    public String jsonPayload() {
+        return jsonPayload;
     }
 
     /**

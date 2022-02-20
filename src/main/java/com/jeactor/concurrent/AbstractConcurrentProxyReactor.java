@@ -13,4 +13,4 @@ import com.jeactor.concurrent.registry.ConcurrentRegistry;
  * 
  * <p>All implementing classes of this interface are thread-safe.
  */
-public interface ConcurrentProxyReactor extends Runnable, Consumer<Event>, ConcurrentRegistry<String, Consumer<Event>> {}
+public interface AbstractConcurrentProxyReactor extends Runnable, Consumer<Event>, ConcurrentRegistry<String, Consumer<Event>> {}
