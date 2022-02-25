@@ -1,3 +1,3 @@
 # Jeactor
 
-Reactor library for Java
+Reactor library for the JVM

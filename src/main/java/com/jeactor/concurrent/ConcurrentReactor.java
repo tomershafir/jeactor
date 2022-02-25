@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 import com.jeactor.PriorityConsumer;
-import com.jeactor.concurrent.demultiplexor.ConcurrentEventDemux;
+import com.jeactor.concurrent.demux.ConcurrentEventDemux;
 import com.jeactor.registry.RegistryService;
 
 /**

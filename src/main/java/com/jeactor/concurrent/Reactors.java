@@ -4,7 +4,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import com.jeactor.concurrent.demultiplexor.ConcurrentPriorityBlockingDemux;
+import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
 import com.jeactor.registry.PriorityEventRegistry;
 
 /**

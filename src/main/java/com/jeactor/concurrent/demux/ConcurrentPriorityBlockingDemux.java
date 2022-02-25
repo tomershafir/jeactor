@@ -1,4 +1,4 @@
-package com.jeactor.concurrent.demultiplexor;
+package com.jeactor.concurrent.demux;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
