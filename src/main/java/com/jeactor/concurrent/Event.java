@@ -9,24 +9,34 @@ public final class Event implements Comparable<Event> {
     // top service layer
     
     private final String eventType;
-    private final EventPriority eventPriority;
+    private final Priority eventPriority;
     private final EventPattern eventPattern;
     private final String jsonPayload;
+
+    /**
+     * Creates an immutable event of the accepted arguments.
+     * 
+     * @param eventType a string type of the event
+     * @throws NullPointerException when null eventType is supplied
+     */
+    Event(final String eventType) {
+        this(eventType, null, null, null);
+    }
 
     /**
      * Creates an immutable event of the accepted type and with the accepted priority.
      * 
      * @param eventType a string type of the event
-     * @param eventPriority an EventPriority constant that represents the priority of the event, if null default to Low
+     * @param eventPriority an EventPriority constant that represents the priority of the event, if null default to Normal
      * @param eventPattern an EventPattern describing the pattern of the event
      * @param jsonPayload an immutable json string that contains event payload
      * @throws NullPointerException when null eventType is supplied
      */
-    Event(final String eventType, final EventPriority eventPriority, final EventPattern eventPattern, final String jsonPayload) {
+    Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload) {
         if (null == eventType)
             throw new NullPointerException();
         this.eventType = eventType;
-        this.eventPriority = null == eventPriority ? EventPriority.LOW : eventPriority;
+        this.eventPriority = null == eventPriority ? Priority.Normal : eventPriority;
         this.eventPattern = eventPattern;
         this.jsonPayload = jsonPayload;
     }
@@ -45,7 +55,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return an EventPriority of this event
      */
-    public EventPriority eventPriority() {
+    public Priority eventPriority() {
         return eventPriority;
     }
 
