@@ -1,24 +1,24 @@
-package com.jeactor.concurrent.registry;
+package com.jeactor.registry;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
+import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.Event;
 
 /**
  * Non thread-safe registry that manages the subscription of event consumers to event types.
  */
-public class ConcurrentEventRegistry implements ConcurrentRegistryService<String, Consumer<Event>> {
-    private final Map<String, List<Consumer<Event>>> registryData;
+public class PriorityEventRegistry implements RegistryService<String, PriorityConsumer<Event>> {
+    private final Map<String, Queue<PriorityConsumer<Event>>> registryData;
 
     /**
      * Creates empty event registry. 
      */
-    public ConcurrentEventRegistry() {
+    public PriorityEventRegistry() {
         registryData = new HashMap<>();
     }
 
@@ -31,13 +31,13 @@ public class ConcurrentEventRegistry implements ConcurrentRegistryService<String
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void register(final String eventType, final Consumer<Event> handler) throws NullPointerException {
+    public void register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if(null == eventType || null == handler)
             throw new NullPointerException();
 
-        List<Consumer<Event>> eventHandlers = registryData.get(eventType);
+        Queue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
         if (null == eventHandlers) {
-            eventHandlers = new LinkedList<Consumer<Event>>(); // linked list is suitable for FIFO behaviour of service handler implemented in this reactor implementation
+            eventHandlers = new PriorityQueue<PriorityConsumer<Event>>();
             registryData.put(eventType, eventHandlers);
         }
         eventHandlers.add(handler);
@@ -52,12 +52,12 @@ public class ConcurrentEventRegistry implements ConcurrentRegistryService<String
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void unregister(final String eventType, final Consumer<Event> handler) throws NullPointerException {
+    public void unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
             throw new NullPointerException();
 
         if (null != registryData) {
-            List<Consumer<Event>> eventHandlers = registryData.get(eventType);
+            Queue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
             if (null != eventHandlers) {
 
                 // removes an element e such that (handler==null ? e==null : handler.equals(e)), if this list contains such an element
@@ -77,7 +77,7 @@ public class ConcurrentEventRegistry implements ConcurrentRegistryService<String
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public Collection<Consumer<Event>> getRegistered(final String eventType) throws NullPointerException {
+    public Collection<PriorityConsumer<Event>> getRegistered(final String eventType) throws NullPointerException {
         if (null == eventType)
             throw new NullPointerException();
         

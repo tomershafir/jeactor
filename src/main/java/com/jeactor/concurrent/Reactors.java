@@ -5,10 +5,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import com.jeactor.concurrent.demultiplexor.ConcurrentPriorityBlockingDemux;
-import com.jeactor.concurrent.registry.ConcurrentEventRegistry;
+import com.jeactor.registry.PriorityEventRegistry;
 
 /**
- * Utility class for reactors which is thread-safe. 
+ * Thread-safe utility class for reactors which is thread-safe. 
  * 
  * <p> Includes factory methods and more.
  * 
@@ -35,7 +35,7 @@ public final class Reactors {
      * @return a new synchronous thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newSyncConcurrentReactor() {
-        return new ConcurrentReactor(new ConcurrentSyncExecutor(), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(new ConcurrentSyncExecutor(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -44,7 +44,7 @@ public final class Reactors {
      * @return a new cached thread pool thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor() {
-        return new ConcurrentReactor(Executors.newCachedThreadPool(), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(Executors.newCachedThreadPool(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -55,7 +55,7 @@ public final class Reactors {
      * @throws NullPointerException when null argument is supplied
      */
     public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor(ThreadFactory threadFactory) {
-        return new ConcurrentReactor(Executors.newCachedThreadPool(threadFactory), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(Executors.newCachedThreadPool(threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -65,7 +65,7 @@ public final class Reactors {
      * @return a new fixed thread pool thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(int nThreads) {
-        return new ConcurrentReactor(Executors.newFixedThreadPool(nThreads), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(Executors.newFixedThreadPool(nThreads), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -77,7 +77,7 @@ public final class Reactors {
      * @throws NullPointerException when null argument is supplied
      */
     public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(int nThreads, ThreadFactory threadFactory) {
-        return new ConcurrentReactor(Executors.newFixedThreadPool(nThreads, threadFactory), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(Executors.newFixedThreadPool(nThreads, threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -86,7 +86,7 @@ public final class Reactors {
      * @return a new single worker thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor() {
-        return new ConcurrentReactor(Executors.newSingleThreadExecutor(), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(Executors.newSingleThreadExecutor(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -97,7 +97,7 @@ public final class Reactors {
      * @throws NullPointerException when null argument is supplied
      */
     public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor(ThreadFactory threadFactory) {
-        return new ConcurrentReactor(Executors.newSingleThreadExecutor(threadFactory), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(Executors.newSingleThreadExecutor(threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -108,6 +108,6 @@ public final class Reactors {
      * @throws NullPointerException when a null argument is accepted
      */
     public static AbstractConcurrentProxyReactor newConcurrentReactor(Executor executor) {
-        return new ConcurrentReactor(new ConcurrentSyncExecutor(), new ConcurrentPriorityBlockingDemux(), new ConcurrentEventRegistry());
+        return new ConcurrentReactor(new ConcurrentSyncExecutor(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 }

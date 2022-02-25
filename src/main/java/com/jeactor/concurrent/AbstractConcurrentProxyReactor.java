@@ -2,7 +2,8 @@ package com.jeactor.concurrent;
 
 import java.util.function.Consumer;
 
-import com.jeactor.concurrent.registry.ConcurrentRegistry;
+import com.jeactor.PriorityConsumer;
+import com.jeactor.registry.Registry;
 
 /**
  * An abstraction of a reactor. Generally a reactor should support init, register, unregister, run, shutdown and accept operations.
@@ -13,4 +14,4 @@ import com.jeactor.concurrent.registry.ConcurrentRegistry;
  * 
  * <p>All implementing classes of this interface are thread-safe.
  */
-public interface AbstractConcurrentProxyReactor extends Runnable, Consumer<Event>, ConcurrentRegistry<String, Consumer<Event>> {}
+public interface AbstractConcurrentProxyReactor extends Runnable, Consumer<Event>, Registry<String, PriorityConsumer<Event>> {}

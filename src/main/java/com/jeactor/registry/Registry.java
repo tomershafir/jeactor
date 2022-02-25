@@ -1,14 +1,12 @@
-package com.jeactor.concurrent.registry;
+package com.jeactor.registry;
 
 /**
  * An interface that represents an object that supports registration of values to keys.
  * 
- * <p>All implementing classes of this interface are thread-safe.
- * 
  * @param <K> type of keys to which values are registered
  * @param <V> type of values to be registered
  */
-public interface ConcurrentRegistry<K, V> {
+public interface Registry<K, V> {
     /**
      * The method registers the accepted value with the accepted key.
      * 

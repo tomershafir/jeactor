@@ -1,4 +1,4 @@
-package com.jeactor.concurrent;
+package com.jeactor;
 
 /**
  * Reresents patterns of events.

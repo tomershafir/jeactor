@@ -1,4 +1,4 @@
-package com.jeactor.concurrent;
+package com.jeactor;
 
 /**
  * Represents a generic priority.
@@ -14,7 +14,7 @@ public enum Priority {
     /**
      * Normal priority.
      */
-    Normal,
+    NORMAL,
 
     /**
      * High priority.

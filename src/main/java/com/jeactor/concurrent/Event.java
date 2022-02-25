@@ -2,6 +2,9 @@ package com.jeactor.concurrent;
 
 import java.util.Objects;
 
+import com.jeactor.EventPattern;
+import com.jeactor.Priority;
+
 /**
  * Represents an immutable event.
  */
@@ -19,7 +22,7 @@ public final class Event implements Comparable<Event> {
      * @param eventType a string type of the event
      * @throws NullPointerException when null eventType is supplied
      */
-    Event(final String eventType) {
+    public Event(final String eventType) {
         this(eventType, null, null, null);
     }
 
@@ -32,11 +35,11 @@ public final class Event implements Comparable<Event> {
      * @param jsonPayload an immutable json string that contains event payload
      * @throws NullPointerException when null eventType is supplied
      */
-    Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload) {
+    public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload) {
         if (null == eventType)
             throw new NullPointerException();
         this.eventType = eventType;
-        this.eventPriority = null == eventPriority ? Priority.Normal : eventPriority;
+        this.eventPriority = null == eventPriority ? Priority.NORMAL : eventPriority;
         this.eventPattern = eventPattern;
         this.jsonPayload = jsonPayload;
     }
@@ -80,11 +83,11 @@ public final class Event implements Comparable<Event> {
     /**
      * Compares this object with the specified object for order. 
      * 
-     * <p>Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object.
+     * <p>Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities.
      * 
      * <p>Note: this class has a natural ordering that is inconsistent with equals.
      * 
-     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities
      * @throws NullPointerException when null argument is supplied
      */
     @Override
@@ -107,7 +110,10 @@ public final class Event implements Comparable<Event> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(eventType, event.eventType) && Objects.equals(eventPriority, event.eventPriority);
+        return Objects.equals(eventType, event.eventType) && 
+            Objects.equals(eventPriority, event.eventPriority) && 
+            Objects.equals(eventPattern, event.eventPattern) && 
+            Objects.equals(jsonPayload, event.jsonPayload);
     }
 
     /**
@@ -117,7 +123,7 @@ public final class Event implements Comparable<Event> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(eventType, eventPriority);
+        return Objects.hash(eventType, eventPriority, eventPattern, jsonPayload);
     }
 
     /**
@@ -129,8 +135,9 @@ public final class Event implements Comparable<Event> {
     public String toString() {
         return "Event{" +
                 "eventType='" + eventType + '\'' +
-                ", eventPriority=" + eventPriority +
+                ", eventPriority=" + eventPriority + '\'' +
+                ", eventPattern=" + eventPattern + '\'' +
+                ", jsonPayload=" + jsonPayload + 
                 '}';
     }
-
 }

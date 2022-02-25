@@ -6,8 +6,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.demultiplexor.ConcurrentEventDemux;
-import com.jeactor.concurrent.registry.ConcurrentRegistryService;
+import com.jeactor.registry.RegistryService;
 
 /**
  * Basic thread-safe reactor implementation.
@@ -24,7 +25,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     private final Object startedSynchorinzaionObject = new Object();
     
     // instance created by factory cannot be exposed or we have thread synchronization problem
-    private final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry;
+    private final RegistryService<String, PriorityConsumer<Event>> eventRegistry;
 
     // fair lock to avoid starvation, but bad effect on performance due to sort exec, also doesnt affect thread shceduling and is not honored by tryLock
     private final Lock registryLock = new ReentrantLock(true); 
@@ -36,7 +37,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
      * @param eventRegistry a registry service object to be used by the reactor
      */
-    ConcurrentReactor(final Executor taskExecutor, final ConcurrentEventDemux eventDemultiplexor, final ConcurrentRegistryService<String, Consumer<Event>> eventRegistry) {
+    ConcurrentReactor(final Executor taskExecutor, final ConcurrentEventDemux eventDemultiplexor, final RegistryService<String, PriorityConsumer<Event>> eventRegistry) {
         this.eventDemultiplexor = eventDemultiplexor; 
         this.started = false;
         this.taskExecutor = taskExecutor;
@@ -52,7 +53,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void register(final String eventType, final Consumer<Event> handler) throws NullPointerException {
+    public void register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
             throw new NullPointerException();
 
@@ -73,7 +74,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void unregister(final String eventType, final Consumer<Event> handler) throws NullPointerException {
+    public void unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
             throw new NullPointerException();
 
@@ -119,7 +120,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
         try {
             while (true) {
                 final Event event = eventDemultiplexor.get();
-                Collection<Consumer<Event>> eventHandlers = null;
+                Collection<PriorityConsumer<Event>> eventHandlers = null;
 
                 if (null != event) {
                     registryLock.lock();
