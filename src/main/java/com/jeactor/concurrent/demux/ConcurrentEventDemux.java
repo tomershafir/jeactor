@@ -1,7 +1,6 @@
 package com.jeactor.concurrent.demux;
 
 import java.util.function.Consumer;
-
 import com.jeactor.concurrent.Event;
 
 /**

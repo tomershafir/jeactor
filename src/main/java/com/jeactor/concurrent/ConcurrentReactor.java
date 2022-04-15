@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
-
 import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.demux.ConcurrentEventDemux;
 import com.jeactor.registry.RegistryService;
@@ -14,10 +13,6 @@ import com.jeactor.registry.RegistryService;
  * Basic thread-safe reactor implementation.
  */
 class ConcurrentReactor implements AbstractConcurrentProxyReactor {
-    // top service layer, validations should be included here 
-    // aliasing is used, necessary where we use collections, need to be careful from within and from without(factory classes) and avoid unwanted side effects 
-    // this reactor implementation should include only main loop and wirings to be SOLID
-
     private final ConcurrentEventDemux eventDemultiplexor;
     private final Executor taskExecutor;
     
@@ -143,7 +138,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
                     }
                 }
 
-                // clears interrupted status
+                // clear interrupted status
                 if (Thread.interrupted())  
                     throw new InterruptedException(); 
             }

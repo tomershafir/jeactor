@@ -1,7 +1,6 @@
 package com.jeactor.concurrent;
 
 import java.util.function.Consumer;
-
 import com.jeactor.PriorityConsumer;
 import com.jeactor.registry.Registry;
 

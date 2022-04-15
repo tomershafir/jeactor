@@ -1,7 +1,6 @@
 package com.jeactor.concurrent;
 
 import java.util.Objects;
-
 import com.jeactor.EventPattern;
 import com.jeactor.Priority;
 
@@ -9,8 +8,6 @@ import com.jeactor.Priority;
  * Represents an immutable event.
  */
 public final class Event implements Comparable<Event> {
-    // top service layer
-    
     private final String eventType;
     private final Priority eventPriority;
     private final EventPattern eventPattern;

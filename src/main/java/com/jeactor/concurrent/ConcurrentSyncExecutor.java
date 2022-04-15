@@ -5,10 +5,7 @@ import java.util.concurrent.Executor;
 /**
  * A thread-safe executer that executes task synchronously in the caller thread.
  */
-class ConcurrentSyncExecutor implements Executor {
-    // no internal memory used for state so thread safe 
-    // intemediate service layer
-
+class ConcurrentSyncExecutor implements Executor { // no in memory state so thread safe 
     /**
      * Creates default synchronous executor.
      */

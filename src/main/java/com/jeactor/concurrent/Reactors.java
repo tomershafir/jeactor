@@ -3,7 +3,6 @@ package com.jeactor.concurrent;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-
 import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
 import com.jeactor.registry.PriorityEventRegistry;
 
@@ -15,18 +14,6 @@ import com.jeactor.registry.PriorityEventRegistry;
  * <p> Note: in a multithreaded environment a client should make sure that the injected dependencies are thread safe.
  */
 public final class Reactors { 
-    // top-level service
-    // aliasing is necessary when collections are possibly used e.g. when injecting executor and thread factory
-
-    // private static final Map<ReactorVariant, AbstractConcurrentProxyReactor> reactorMultiton = new HashMap<>();
-    
-    // private static enum ReactorVariant {
-    //     SYNC,
-    //     CACHED_THREAD_POOL,
-    //     FIXED_THREAD_POOL,
-    //     SINGLE_WORKER
-    // } 
-
     private Reactors() {}
 
     /**
