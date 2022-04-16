@@ -11,6 +11,9 @@ public class EventBuilder implements Builder<Event> { // counts on Event's valid
     private EventPattern eventPattern;
     private String jsonPayload;
 
+    /**
+     * Creates a default builder instance.
+     */
     public EventBuilder() {}
 
     /**

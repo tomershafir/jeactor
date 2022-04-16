@@ -12,16 +12,7 @@ public final class Event implements Comparable<Event> {
     private final Priority eventPriority;
     private final EventPattern eventPattern;
     private final String jsonPayload;
-
-    /**
-     * Creates an immutable event of the accepted arguments.
-     * 
-     * @param eventType a string type of the event
-     * @throws NullPointerException when null eventType is supplied
-     */
-    public Event(final String eventType) {
-        this(eventType, null, null, null);
-    }
+    private final long timestamp;
 
     /**
      * Creates an immutable event of the accepted type and with the accepted priority.
@@ -35,6 +26,7 @@ public final class Event implements Comparable<Event> {
     public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload) {
         if (null == eventType)
             throw new NullPointerException();
+        timestamp = System.currentTimeMillis();
         this.eventType = eventType;
         this.eventPriority = null == eventPriority ? Priority.NORMAL : eventPriority;
         this.eventPattern = eventPattern;
@@ -110,7 +102,8 @@ public final class Event implements Comparable<Event> {
         return Objects.equals(eventType, event.eventType) && 
             Objects.equals(eventPriority, event.eventPriority) && 
             Objects.equals(eventPattern, event.eventPattern) && 
-            Objects.equals(jsonPayload, event.jsonPayload);
+            Objects.equals(jsonPayload, event.jsonPayload) &&
+            Objects.equals(timestamp, event.timestamp);
     }
 
     /**
@@ -120,7 +113,7 @@ public final class Event implements Comparable<Event> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(eventType, eventPriority, eventPattern, jsonPayload);
+        return Objects.hash(eventType, eventPriority, eventPattern, jsonPayload, timestamp);
     }
 
     /**
@@ -131,10 +124,11 @@ public final class Event implements Comparable<Event> {
     @Override
     public String toString() {
         return "Event{" +
-                "eventType='" + eventType + '\'' +
-                ", eventPriority=" + eventPriority + '\'' +
-                ", eventPattern=" + eventPattern + '\'' +
-                ", jsonPayload=" + jsonPayload + 
+                "eventType=" + eventType +
+                ", eventPriority=" + eventPriority +
+                ", eventPattern=" + eventPattern +
+                ", jsonPayload=" + jsonPayload +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }
