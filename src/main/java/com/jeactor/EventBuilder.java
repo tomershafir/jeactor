@@ -1,5 +1,7 @@
 package com.jeactor;
 
+import java.util.UUID;
+
 import com.jeactor.concurrent.Event;
 
 /**
@@ -10,7 +12,9 @@ public class EventBuilder implements Builder<Event> { // counts on Event's valid
     private Priority eventPriority;
     private EventPattern eventPattern;
     private String jsonPayload;
-
+    private long timestamp;
+    private UUID uuid;
+    
     /**
      * Creates a default builder instance.
      */
@@ -61,11 +65,22 @@ public class EventBuilder implements Builder<Event> { // counts on Event's valid
     }
 
     /**
+     * Sets uuid for the event being built.
+     * 
+     * @param uuid
+     * @return this builder object
+     */
+    public EventBuilder withUUID(final UUID uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    /**
      * The method builds a new immutable event.
      * 
      * @return an instance of type T
      */
     public Event build() {
-        return new Event(eventType, eventPriority, eventPattern, jsonPayload);
+        return new Event(eventType, eventPriority, eventPattern, jsonPayload, uuid);
     }
 }

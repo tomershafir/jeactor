@@ -3,6 +3,7 @@ package com.jeactor.concurrent;
 import java.util.Objects;
 import com.jeactor.EventPattern;
 import com.jeactor.Priority;
+import java.util.UUID;
 
 /**
  * Represents an immutable event.
@@ -13,6 +14,7 @@ public final class Event implements Comparable<Event> {
     private final EventPattern eventPattern;
     private final String jsonPayload;
     private final long timestamp;
+    private final UUID uuid;
 
     /**
      * Creates an immutable event of the accepted type and with the accepted priority.
@@ -21,12 +23,14 @@ public final class Event implements Comparable<Event> {
      * @param eventPriority an EventPriority constant that represents the priority of the event, if null default to Normal
      * @param eventPattern an EventPattern describing the pattern of the event
      * @param jsonPayload an immutable json string that contains event payload
+     * @param uuid an uuid for the event
      * @throws NullPointerException when null eventType is supplied
      */
-    public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload) {
+    public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload, final UUID uuid) {
         if (null == eventType)
             throw new NullPointerException();
         timestamp = System.currentTimeMillis();
+        this.uuid = uuid;
         this.eventType = eventType;
         this.eventPriority = null == eventPriority ? Priority.NORMAL : eventPriority;
         this.eventPattern = eventPattern;
@@ -70,6 +74,24 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
+     * The method returns the timestamp of this event.
+     * 
+     * @return a long timestamp of this event
+     */
+    public long timestamp() {
+        return timestamp;
+    }
+
+    /**
+     * The method returns the uuid of this event.
+     * 
+     * @return a uuid of this event
+     */
+    public UUID uuid() {
+        return uuid;
+    }
+
+    /**
      * Compares this object with the specified object for order. 
      * 
      * <p>Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities.
@@ -103,7 +125,8 @@ public final class Event implements Comparable<Event> {
             Objects.equals(eventPriority, event.eventPriority) && 
             Objects.equals(eventPattern, event.eventPattern) && 
             Objects.equals(jsonPayload, event.jsonPayload) &&
-            Objects.equals(timestamp, event.timestamp);
+            Objects.equals(timestamp, event.timestamp) &&
+            Objects.equals(uuid, event.uuid);
     }
 
     /**
@@ -113,7 +136,7 @@ public final class Event implements Comparable<Event> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(eventType, eventPriority, eventPattern, jsonPayload, timestamp);
+        return Objects.hash(eventType, eventPriority, eventPattern, jsonPayload, timestamp, uuid);
     }
 
     /**
@@ -129,6 +152,7 @@ public final class Event implements Comparable<Event> {
                 ", eventPattern=" + eventPattern +
                 ", jsonPayload=" + jsonPayload +
                 ", timestamp=" + timestamp +
+                ", uuid=" + uuid +
                 '}';
     }
 }
