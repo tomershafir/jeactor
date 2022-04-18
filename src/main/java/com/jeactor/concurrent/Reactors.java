@@ -7,12 +7,13 @@ import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
 import com.jeactor.registry.PriorityEventRegistry;
 
 /**
- * Thread-safe utility class for reactors which is thread-safe. 
+ * Utility class for reactors which is thread-safe. 
  * 
  * <p> Includes factory methods and more.
  * 
  * <p> Note: in a multithreaded environment a client should make sure that the injected dependencies are thread safe.
  */
+@ThreadSafe
 public final class Reactors { 
     private Reactors() {}
 

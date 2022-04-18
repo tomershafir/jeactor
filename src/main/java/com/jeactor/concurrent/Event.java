@@ -8,6 +8,7 @@ import java.util.UUID;
 /**
  * Represents an immutable event.
  */
+@ThreadSafe
 public final class Event implements Comparable<Event> {
     private final String eventType;
     private final Priority eventPriority;

@@ -10,7 +10,6 @@ import com.jeactor.registry.Registry;
  * <p>Initialization must be implemented via object construction.
  * 
  * <p>Shutdown must be implemented via interrupts.
- * 
- * <p>All implementing classes of this interface are thread-safe.
  */
+@ThreadSafe
 public interface AbstractConcurrentProxyReactor extends Runnable, Consumer<Event>, Registry<String, PriorityConsumer<Event>> {}

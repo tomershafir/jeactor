@@ -3,10 +3,12 @@ package com.jeactor.concurrent.demux;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import com.jeactor.concurrent.Event;
+import com.jeactor.concurrent.ThreadSafe;
 
 /**
- * Blocking thread-safe implementation of an event demultiplexor that supports prioritization.
+ * Blocking event demultiplexor that supports prioritization.
  */
+@ThreadSafe
 public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux { 
     // BlockingQueue implementations are thread-safe for single-element operations, and here we have only single element operations
     private final BlockingQueue<Event> priorityBlockingQueue; 

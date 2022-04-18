@@ -10,8 +10,9 @@ import com.jeactor.concurrent.demux.ConcurrentEventDemux;
 import com.jeactor.registry.RegistryService;
 
 /**
- * Basic thread-safe reactor implementation.
+ * Basic reactor implementation.
  */
+@ThreadSafe
 class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     private final ConcurrentEventDemux eventDemultiplexor;
     private final Executor taskExecutor;

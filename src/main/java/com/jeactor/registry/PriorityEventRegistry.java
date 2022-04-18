@@ -7,10 +7,12 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.Event;
+import com.jeactor.concurrent.NotThreadSafe;
 
 /**
- * Non thread-safe registry that manages the subscription of event consumers to event types.
+ * Reegistry that manages the subscription of event consumers to event types.
  */
+@NotThreadSafe
 public class PriorityEventRegistry implements RegistryService<String, PriorityConsumer<Event>> {
     private final Map<String, Queue<PriorityConsumer<Event>>> registryData;
 
