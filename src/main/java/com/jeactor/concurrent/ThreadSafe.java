@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * Documenting annotation to indicate a type (class, interface, annotation, enum) is thread-safe.
- * The implementer must ensure thread safety.
+ * If applied to an abstract type, all implemetations should be thread safe.
+ * The implementer must ensure thread safety compatibility.
  */
 @Retention(RetentionPolicy.CLASS)
 @Documented

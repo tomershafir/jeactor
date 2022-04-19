@@ -3,16 +3,17 @@ package com.jeactor;
 import java.util.UUID;
 
 import com.jeactor.concurrent.Event;
+import com.jeactor.concurrent.NotThreadSafe;
 
 /**
- * A non thread safe event builder.
+ * Basic event builder.
  */
+@NotThreadSafe
 public class EventBuilder implements Builder<Event> { // counts on Event's validations lazily
     private String eventType;
     private Priority eventPriority;
     private EventPattern eventPattern;
     private String jsonPayload;
-    private long timestamp;
     private UUID uuid;
     
     /**
