@@ -62,7 +62,7 @@ public abstract class UnitTest {
      * The method that is executed after each test case execution in the unit test.
      */
     @AfterEach
-    private final void doAfterEach() {
+    private final void execAfterEach() {
         // must be called first (checkout afterEach() API documentation)
         afterEach();
 
@@ -75,7 +75,7 @@ public abstract class UnitTest {
      * The method that is executed before each test case execution in the unit test.
      */
     @BeforeEach
-    private final void doBeforeEach() {
+    private final void execBeforeEach() {
         // must be called first (checkout beforeEach() API documentation)
         beforeEach();
 
@@ -88,7 +88,7 @@ public abstract class UnitTest {
      * The method that is executed after all test cases' execution in the unit test.
      */
     @AfterAll
-    private final void doAfterAll() {
+    private final void execAfterAll() {
         // must be called first (checkout afterAll() API documentation)
         afterAll();
     }
@@ -97,7 +97,7 @@ public abstract class UnitTest {
      * The method that is executed before all test cases' execution in the unit test.
      */
     @BeforeAll
-    private final void doBeforeAll() {
+    private final void execBeforeAll() {
         // must be called first (checkout beforeAll() API documentation)
         beforeAll();
     }
