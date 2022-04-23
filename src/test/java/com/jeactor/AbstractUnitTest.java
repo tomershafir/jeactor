@@ -1,16 +1,21 @@
 package com.jeactor;
 
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.listeners.MockCreationListener;
+import org.mockito.listeners.MockitoListener;
+import org.mockito.mock.MockCreationSettings;
 
 /**
  * Abstract unit test class.
@@ -19,50 +24,43 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class) // backward compatibility with JUnit4
-public abstract class UnitTest {
+public abstract class AbstractUnitTest {
     private AutoCloseable closeableMockitoAnnotationsResource;
+    private Set<Object> mocks;
+    private MockitoListener mockCreationListener;
     
     /**
      * Creates default unit test instance.
      */
-    protected UnitTest() {}
+    protected AbstractUnitTest() {}
 
     /**
-     * Hook method that is executed after each test case execution in the unit test.
+     * Hook method that is executed after each test case execution in the unit test. May be overriden by concrete unit tests.
      * 
      * <p> The logic is executed first before any default behaviour.
      */
     protected void afterEach() {}
 
     /**
-     * Hook method that is executed before each test case execution in the unit test.
+     * Hook method that is executed before each test case execution in the unit test. May be overriden by concrete unit tests.
      * 
      * <p> The logic is executed first before any default behaviour.
      */
     protected void beforeEach() {}
 
      /**
-     * Hook method that is executed after all test cases' execution in the unit test.
+     * Hook method that is executed after all test cases' execution in the unit test. May be overriden by concrete unit tests.
      * 
      * <p> The logic is executed first before any default behaviour.
      */
     protected void afterAll() {}
 
     /**
-     * Hook method that is executed before all test cases' execution in the unit test.
+     * Hook method that is executed before all test cases' execution in the unit test. May be overriden by concrete unit tests.
      * 
      * <p> The logic is executed first before any default behaviour.
      */
     protected void beforeAll() {}
-
-    /**
-     * The method returns an array that contains all of the Mockito mocks that are used in the unit test.
-     * 
-     * @return an object array that contains all of the Mockito mocks that are used in the unit test
-     */
-    protected Object[] getMocks() {
-        return null;
-    }
 
     /**
      * The method that is executed before each test case execution in the unit test.
@@ -74,26 +72,30 @@ public abstract class UnitTest {
 
         closeableMockitoAnnotationsResource = MockitoAnnotations.openMocks(this);
         
-        final Object[] mocks = getMocks();
-        if (null != mocks && mocks.length > 0)
-            reset(mocks);
+        mocks = new HashSet<>();
+        if (null != mockCreationListener)
+            Mockito.framework().removeListener(mockCreationListener);
+        mockCreationListener = new MockCreationListener() {
+            @Override
+            public void onMockCreated(final Object mock, final MockCreationSettings settings) {
+                mocks.add(mock);
+            }
+        };
+        Mockito.framework().addListener(mockCreationListener);
     }
 
     /**
      * The method that is executed after each test case execution in the unit test.
      */
     @AfterEach
-    public final void execAfterEach() {
+    public final void execAfterEach() throws Exception {
         // must be called first (checkout afterEach() API documentation)
         afterEach();
 
-        try {
-            if(null != closeableMockitoAnnotationsResource)
-                closeableMockitoAnnotationsResource.close();
-        } catch(Exception e) {}
+        if(null != closeableMockitoAnnotationsResource)
+            closeableMockitoAnnotationsResource.close();
 
-        final Object[] mocks = getMocks();
-        if (null != mocks && mocks.length > 0)
+        if (mocks.size() > 0)
             verifyNoMoreInteractions(mocks);
     }
 
