@@ -14,7 +14,7 @@ public final class Event implements Comparable<Event> {
     private final Priority eventPriority;
     private final EventPattern eventPattern;
     private final String jsonPayload;
-    private final long timestamp;
+    private final Long timestamp;
     private final UUID uuid;
 
     /**
@@ -104,11 +104,14 @@ public final class Event implements Comparable<Event> {
      */
     @Override
     public int compareTo(Event o) {
-        if(null == o)
+        if (null == o)
             throw new NullPointerException();
-        if(equals(o))
+        if (equals(o))
             return 0;
-        return eventPriority.compareTo(o.eventPriority);
+        final int res = eventPriority.compareTo(o.eventPriority);
+        if (0 != res)
+            return res;
+        return timestamp.compareTo(o.timestamp);
     }
 
     /**
