@@ -10,9 +10,7 @@ import java.util.function.Consumer;
 public abstract class PriorityConsumer<T> implements Consumer<T>, Comparable<PriorityConsumer<T>> {
     private final Priority consumerPriority;
 
-    /**
-     * Creates a consumer with NORMAL priority.
-     */
+    /** Creates a consumer with NORMAL priority. */
     protected PriorityConsumer() {
         this.consumerPriority = Priority.NORMAL;
     }
@@ -40,8 +38,6 @@ public abstract class PriorityConsumer<T> implements Consumer<T>, Comparable<Pri
     public final int compareTo(PriorityConsumer<T> o) {
         if(null == o)
             throw new NullPointerException();
-        if(equals(o))
-            return 0;
         return consumerPriority.compareTo(o.consumerPriority);
     }
 }

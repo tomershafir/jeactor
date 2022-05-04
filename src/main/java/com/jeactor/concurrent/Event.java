@@ -5,9 +5,7 @@ import com.jeactor.EventPattern;
 import com.jeactor.Priority;
 import java.util.UUID;
 
-/**
- * Represents an immutable event.
- */
+/** Represents an immutable event. */
 @ThreadSafe
 public final class Event implements Comparable<Event> {
     private final String eventType;
@@ -95,7 +93,7 @@ public final class Event implements Comparable<Event> {
     /**
      * Compares this object with the specified object for order. 
      * 
-     * <p>Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities.
+     * <p>Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities and timestamps.
      * 
      * <p>Note: this class has a natural ordering that is inconsistent with equals.
      * 

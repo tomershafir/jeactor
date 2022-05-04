@@ -29,9 +29,7 @@ public abstract class AbstractUnitTest {
     private Set<Object> mocks;
     private MockitoListener mockCreationListener;
     
-    /**
-     * Creates default unit test instance.
-     */
+    /** Creates default unit test instance. */
     protected AbstractUnitTest() {}
 
     /**
@@ -62,9 +60,7 @@ public abstract class AbstractUnitTest {
      */
     protected void beforeAll() {}
 
-    /**
-     * The method that is executed before each test case execution in the unit test.
-     */
+    /** The method that is executed before each test case execution in the unit test. */
     @BeforeEach
     public final void execBeforeEach() {
         // must be called first (checkout beforeEach() API documentation)
@@ -84,9 +80,7 @@ public abstract class AbstractUnitTest {
         Mockito.framework().addListener(mockCreationListener);
     }
 
-    /**
-     * The method that is executed after each test case execution in the unit test.
-     */
+    /** The method that is executed after each test case execution in the unit test. */
     @AfterEach
     public final void execAfterEach() throws Exception {
         // must be called first (checkout afterEach() API documentation)
@@ -99,18 +93,14 @@ public abstract class AbstractUnitTest {
             verifyNoMoreInteractions(mocks);
     }
 
-    /**
-     * The method that is executed before all test cases' execution in the unit test.
-     */
+    /** The method that is executed before all test cases' execution in the unit test. */
     @BeforeAll
     public final void execBeforeAll() {
         // must be called first (checkout beforeAll() API documentation)
         beforeAll();
     }
 
-    /**
-     * The method that is executed after all test cases' execution in the unit test.
-     */
+    /** The method that is executed after all test cases' execution in the unit test. */
     @AfterAll
     public final void execAfterAll() {
         // must be called first (checkout afterAll() API documentation)

@@ -9,9 +9,7 @@ import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.demux.ConcurrentEventDemux;
 import com.jeactor.registry.RegistryService;
 
-/**
- * Basic reactor implementation.
- */
+/** Basic reactor implementation. */
 @ThreadSafe
 class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     private final ConcurrentEventDemux eventDemultiplexor;

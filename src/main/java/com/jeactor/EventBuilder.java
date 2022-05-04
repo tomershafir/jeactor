@@ -5,9 +5,7 @@ import java.util.UUID;
 import com.jeactor.concurrent.Event;
 import com.jeactor.concurrent.NotThreadSafe;
 
-/**
- * Basic event builder.
- */
+/** Basic event builder. */
 @NotThreadSafe
 public class EventBuilder implements Builder<Event> { // counts on Event's validations lazily
     private String eventType;
@@ -16,9 +14,7 @@ public class EventBuilder implements Builder<Event> { // counts on Event's valid
     private String jsonPayload;
     private UUID uuid;
     
-    /**
-     * Creates a default builder instance.
-     */
+    /** Creates a default builder instance. */
     public EventBuilder() {}
 
     /**
