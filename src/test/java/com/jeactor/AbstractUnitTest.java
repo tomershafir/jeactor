@@ -46,20 +46,6 @@ public abstract class AbstractUnitTest {
      */
     protected void beforeEach() {}
 
-     /**
-     * Hook method that is executed after all test cases' execution in the unit test. May be overriden by concrete unit tests.
-     * 
-     * <p> The logic is executed first before any default behaviour.
-     */
-    protected void afterAll() {}
-
-    /**
-     * Hook method that is executed before all test cases' execution in the unit test. May be overriden by concrete unit tests.
-     * 
-     * <p> The logic is executed first before any default behaviour.
-     */
-    protected void beforeAll() {}
-
     /** The method that is executed before each test case execution in the unit test. */
     @BeforeEach
     public final void execBeforeEach() {
@@ -69,8 +55,6 @@ public abstract class AbstractUnitTest {
         closeableMockitoAnnotationsResource = MockitoAnnotations.openMocks(this);
         
         mocks = new HashSet<>();
-        if (null != mockCreationListener)
-            Mockito.framework().removeListener(mockCreationListener);
         mockCreationListener = new MockCreationListener() {
             @Override
             public void onMockCreated(final Object mock, final MockCreationSettings settings) {
@@ -88,22 +72,10 @@ public abstract class AbstractUnitTest {
 
         if(null != closeableMockitoAnnotationsResource)
             closeableMockitoAnnotationsResource.close();
+        
+        Mockito.framework().removeListener(mockCreationListener);
 
         if (mocks.size() > 0)
             verifyNoMoreInteractions(mocks);
-    }
-
-    /** The method that is executed before all test cases' execution in the unit test. */
-    @BeforeAll
-    public final void execBeforeAll() {
-        // must be called first (checkout beforeAll() API documentation)
-        beforeAll();
-    }
-
-    /** The method that is executed after all test cases' execution in the unit test. */
-    @AfterAll
-    public final void execAfterAll() {
-        // must be called first (checkout afterAll() API documentation)
-        afterAll();
     }
 }

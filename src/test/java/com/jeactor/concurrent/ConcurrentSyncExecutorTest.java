@@ -1,5 +1,7 @@
 package com.jeactor.concurrent;
 
-public class ConcurrentSyncExecutorTest {
+import com.jeactor.AbstractJeactorUnitTest;
+
+public class ConcurrentSyncExecutorTest extends AbstractJeactorUnitTest {
     
 }

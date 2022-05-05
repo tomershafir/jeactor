@@ -1,5 +1,7 @@
 package com.jeactor.concurrent;
 
-public class ConcurrentReactorTest {
+import com.jeactor.AbstractJeactorUnitTest;
+
+public class ConcurrentReactorTest extends AbstractJeactorUnitTest {
     
 }

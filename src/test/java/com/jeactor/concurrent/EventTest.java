@@ -1,5 +1,7 @@
 package com.jeactor.concurrent;
 
-public class EventTest {
+import com.jeactor.AbstractJeactorUnitTest;
+
+public class EventTest extends AbstractJeactorUnitTest {
     
 }

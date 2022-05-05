@@ -1,5 +1,7 @@
 package com.jeactor.registry;
 
-public class PriorityEventRegistryTest {
+import com.jeactor.AbstractJeactorUnitTest;
+
+public class PriorityEventRegistryTest extends AbstractJeactorUnitTest {
     
 }

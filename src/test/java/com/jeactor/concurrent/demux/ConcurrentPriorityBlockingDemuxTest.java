@@ -1,5 +1,7 @@
 package com.jeactor.concurrent.demux;
 
-public class ConcurrentPriorityBlockingDemuxTest {
+import com.jeactor.AbstractJeactorUnitTest;
+
+public class ConcurrentPriorityBlockingDemuxTest extends AbstractJeactorUnitTest {
     
 }
