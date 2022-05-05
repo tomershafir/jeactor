@@ -12,7 +12,7 @@ import com.jeactor.concurrent.NotThreadSafe;
 /** Registry that manages the subscription of event consumers to event types. */
 @NotThreadSafe
 public class PriorityEventRegistry implements RegistryService<String, PriorityConsumer<Event>> {
-    private final Map<String, Queue<PriorityConsumer<Event>>> registryData;
+    private final Map<String, PriorityQueue<PriorityConsumer<Event>>> registryData;
 
     /** Creates empty event registry. */
     public PriorityEventRegistry() {
