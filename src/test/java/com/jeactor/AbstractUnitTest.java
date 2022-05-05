@@ -9,8 +9,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.listeners.MockCreationListener;
@@ -23,7 +21,6 @@ import org.mockito.mock.MockCreationSettings;
  * <p> All unit test classes should extend this class.
  */
 @ExtendWith(MockitoExtension.class)
-@RunWith(JUnitPlatform.class) // backward compatibility with JUnit4
 public abstract class AbstractUnitTest {
     private AutoCloseable closeableMockitoAnnotationsResource;
     private Set<Object> mocks;
