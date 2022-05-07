@@ -2,9 +2,7 @@ package com.jeactor.registry;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.Event;
 import com.jeactor.concurrent.NotThreadSafe;
@@ -12,7 +10,7 @@ import com.jeactor.concurrent.NotThreadSafe;
 /** Registry that manages the subscription of event consumers to event types. */
 @NotThreadSafe
 public class PriorityEventRegistry implements RegistryService<String, PriorityConsumer<Event>> {
-    private final Map<String, PriorityQueue<PriorityConsumer<Event>>> registryData;
+    private final HashMap<String, PriorityQueue<PriorityConsumer<Event>>> registryData;
 
     /** Creates empty event registry. */
     public PriorityEventRegistry() {
@@ -24,46 +22,44 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
      * 
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
-     * @return boolean value indicating wether the subscription succeeded or not
+     * @return boolean value indicating wether the redistry state has been changed or not
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
+    public boolean register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if(null == eventType || null == handler)
             throw new NullPointerException();
 
-        Queue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
+        PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
         if (null == eventHandlers) {
             eventHandlers = new PriorityQueue<PriorityConsumer<Event>>();
             registryData.put(eventType, eventHandlers);
         }
-        eventHandlers.add(handler);
+        return eventHandlers.add(handler);
     }
 
     /**
      * The method unsubscribes an handler with an event type.
      * 
-     * @param eventType 
-     * @param handler
-     * @return boolean value indicating wether the unsubscription succeeded or not
+     * @param eventType string event type identifier
+     * @param handler a consumer of event to unregister
+     * @return boolean value indicating wether the redistry state has been changed or not
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
+    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
             throw new NullPointerException();
 
-        if (null != registryData) {
-            Queue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
-            if (null != eventHandlers) {
-
-                // removes an element e such that (handler==null ? e==null : handler.equals(e)), if this list contains such an element
-                eventHandlers.remove(handler); 
-                
-                if(eventHandlers.isEmpty())
-                    registryData.remove(eventType);
-            }
-        } 
+        boolean flag = false;
+        PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
+        if (null != eventHandlers) {
+            flag = eventHandlers.remove(handler); 
+            
+            if (eventHandlers.isEmpty())
+                registryData.remove(eventType);
+        }
+        return flag;
     }
 
     /**
@@ -78,6 +74,9 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
         if (null == eventType)
             throw new NullPointerException();
         
-        return registryData.get(eventType);
+        final PriorityQueue<PriorityConsumer<Event>> tmp = registryData.get(eventType);
+        if (null == tmp)
+            return null;
+        return new PriorityQueue<PriorityConsumer<Event>>(tmp);
     }
 }

@@ -47,13 +47,13 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
+    public boolean register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
             throw new NullPointerException();
 
         registryLock.lock();
         try {
-            eventRegistry.register(eventType, handler);
+            return eventRegistry.register(eventType, handler);
         } finally {
             registryLock.unlock();
         }
@@ -68,13 +68,13 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public void unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
+    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
         if (null == eventType || null == handler)
             throw new NullPointerException();
 
         registryLock.lock();
         try {        
-            eventRegistry.unregister(eventType, handler);
+            return eventRegistry.unregister(eventType, handler);
         } finally {
             registryLock.unlock();
         }

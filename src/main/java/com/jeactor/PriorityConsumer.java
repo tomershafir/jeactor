@@ -1,5 +1,6 @@
 package com.jeactor;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -39,5 +40,41 @@ public abstract class PriorityConsumer<T> implements Consumer<T>, Comparable<Pri
         if(null == o)
             throw new NullPointerException();
         return consumerPriority.compareTo(o.consumerPriority);
+    }
+
+    /**
+     * Indicates wether this object equals to the accepted object.
+     * 
+     * @param o other object to compare this object to
+     * @return true if the objects are equal, or false otherwise
+     */    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PriorityConsumer<?> that = (PriorityConsumer<?>) o;
+        return Objects.equals(consumerPriority, that.consumerPriority);
+    }
+
+    /**
+     * Generates a hash code value for the object.
+     * 
+     * @return an integer hash code value for the object
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(consumerPriority);
+    }
+    
+    /**
+     * Generates a string representation of this object.
+     * 
+     * @return a string representation of this object
+     */
+    @Override
+    public String toString() {
+        return "PriorityConsumer{" +
+                "consumerPriority=" + consumerPriority +
+                '}';
     }
 }

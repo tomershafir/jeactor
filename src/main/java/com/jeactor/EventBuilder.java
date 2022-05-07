@@ -1,7 +1,6 @@
 package com.jeactor;
 
 import java.util.UUID;
-
 import com.jeactor.concurrent.Event;
 import com.jeactor.concurrent.NotThreadSafe;
 
