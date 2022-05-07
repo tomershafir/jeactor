@@ -41,7 +41,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return a string type of this event
      */
-    public String eventType() {
+    public String getEventType() {
         return eventType;
     }
 
@@ -50,7 +50,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return an EventPriority of this event
      */
-    public Priority eventPriority() {
+    public Priority getEventPriority() {
         return eventPriority;
     }
 
@@ -59,7 +59,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return an EventPattern of this event
      */
-    public EventPattern eventPattern() {
+    public EventPattern getEventPattern() {
         return eventPattern;
     }
 
@@ -68,7 +68,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return a json string that forms of this event
      */
-    public String jsonPayload() {
+    public String getJsonPayload() {
         return jsonPayload;
     }
 
@@ -77,7 +77,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return a long timestamp of this event
      */
-    public long timestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
@@ -86,7 +86,7 @@ public final class Event implements Comparable<Event> {
      * 
      * @return a uuid of this event
      */
-    public UUID uuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
@@ -104,8 +104,6 @@ public final class Event implements Comparable<Event> {
     public int compareTo(Event o) {
         if (null == o)
             throw new NullPointerException();
-        if (equals(o))
-            return 0;
         final int res = eventPriority.compareTo(o.eventPriority);
         if (0 != res)
             return res;

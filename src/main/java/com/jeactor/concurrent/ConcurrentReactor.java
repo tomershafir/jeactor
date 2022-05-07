@@ -120,7 +120,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
                     registryLock.lock();
                     try { 
                         if (null != eventRegistry) {
-                            eventHandlers = eventRegistry.getRegistered(event.eventType());
+                            eventHandlers = eventRegistry.getRegistered(event.getEventType());
                             if (null != eventHandlers) {
                                 for (final Consumer<Event> handler : eventHandlers) {
                                     taskExecutor.execute(new Runnable() {
