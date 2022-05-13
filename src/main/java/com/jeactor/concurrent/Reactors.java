@@ -5,6 +5,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
 import com.jeactor.registry.PriorityEventRegistry;
+import com.jeactor.validation.Validations;
+
+import jakarta.validation.ValidationException;
 
 /**
  * Utility class for reactors which is thread-safe. 
@@ -40,32 +43,37 @@ public final class Reactors {
      * 
      * @param threadFactory a thread factory insance to be used for thread creation
      * @return a new cached thread pool thread-safe reactor
-     * @throws NullPointerException when null argument is supplied
+     * @throws ValidationException when null argument is supplied
      */
-    public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor(ThreadFactory threadFactory) {
+    public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
+        Validations.validateNotNull(threadFactory);
         return new ConcurrentReactor(Executors.newCachedThreadPool(threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
      * A factory method that returns a new fixed thread pool thread-safe reactor.
      * 
-     * @param nThreads an integer pool size 
+     * @param noThreads an integer pool size 
      * @return a new fixed thread pool thread-safe reactor
+     * @throws ValidationException when supplied noThreads is negative or 0
      */
-    public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(int nThreads) {
-        return new ConcurrentReactor(Executors.newFixedThreadPool(nThreads), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+    public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(final int noThreads) throws ValidationException {
+        Validations.validatePositive(noThreads);
+        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
      * A factory method that returns a new fixed thread pool thread-safe reactor.
      * 
-     * @param nThreads an integer pool size 
+     * @param noThreads an integer pool size 
      * @param threadFactory a thread factory insance to be used for thread creation
      * @return a new fixed thread pool thread-safe reactor
-     * @throws NullPointerException when null argument is supplied
+     * @throws ValidationException when null factory is supplied or supplied noThreads is negative or 0
      */
-    public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(int nThreads, ThreadFactory threadFactory) {
-        return new ConcurrentReactor(Executors.newFixedThreadPool(nThreads, threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+    public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(final int noThreads, final ThreadFactory threadFactory) throws ValidationException {
+        Validations.validateNotNull(threadFactory);
+        Validations.validatePositive(noThreads);
+        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads, threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
     /**
@@ -82,9 +90,10 @@ public final class Reactors {
      * 
      * @param threadFactory a thread factory insance to be used for thread creation
      * @return a new single worker thread-safe reactor
-     * @throws NullPointerException when null argument is supplied
+     * @throws ValidationException when null argument is supplied
      */
-    public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor(ThreadFactory threadFactory) {
+    public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
+        Validations.validateNotNull(threadFactory);
         return new ConcurrentReactor(Executors.newSingleThreadExecutor(threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 
@@ -93,9 +102,10 @@ public final class Reactors {
      * 
      * @param executor an executor to be used by the reactor
      * @return a new synchronous thread-safe reactor
-     * @throws NullPointerException when a null argument is accepted
+     * @throws ValidationException when a null argument is accepted
      */
-    public static AbstractConcurrentProxyReactor newConcurrentReactor(Executor executor) {
-        return new ConcurrentReactor(new ConcurrentSyncExecutor(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+    public static AbstractConcurrentProxyReactor newConcurrentReactor(final Executor executor) throws ValidationException {
+        Validations.validateNotNull(executor);
+        return new ConcurrentReactor(executor, new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
     }
 }

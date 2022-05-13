@@ -32,13 +32,11 @@ public abstract class PriorityConsumer<T> implements Consumer<T>, Comparable<Pri
      * 
      * <p>Note: this class has a natural ordering that is inconsistent with Object.equals() and may be inconsistent with other equals() implementations in derived classes.
      * 
-     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities
-     * @throws NullPointerException when null argument is supplied
-     */
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities. If the accepted object is null, a positive integer is returned     */
     @Override
-    public final int compareTo(PriorityConsumer<T> o) {
+    public final int compareTo(final PriorityConsumer<T> o) {
         if(null == o)
-            throw new NullPointerException();
+            return 1;
         return consumerPriority.compareTo(o.consumerPriority);
     }
 
@@ -49,10 +47,10 @@ public abstract class PriorityConsumer<T> implements Consumer<T>, Comparable<Pri
      * @return true if the objects are equal, or false otherwise
      */    
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PriorityConsumer<?> that = (PriorityConsumer<?>) o;
+        final PriorityConsumer<?> that = (PriorityConsumer<?>) o;
         return Objects.equals(consumerPriority, that.consumerPriority);
     }
 

@@ -3,6 +3,9 @@ package com.jeactor.concurrent;
 import java.util.Objects;
 import com.jeactor.EventPattern;
 import com.jeactor.Priority;
+import com.jeactor.validation.Validations;
+import jakarta.validation.ValidationException;
+
 import java.util.UUID;
 
 /** Represents an immutable event. */
@@ -23,11 +26,10 @@ public final class Event implements Comparable<Event> {
      * @param eventPattern an EventPattern describing the pattern of the event
      * @param jsonPayload an immutable json string that contains event payload
      * @param uuid an uuid for the event
-     * @throws NullPointerException when null eventType is supplied
+     * @throws ValidationException when null eventType is supplied
      */
-    public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload, final UUID uuid) {
-        if (null == eventType)
-            throw new NullPointerException();
+    public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload, final UUID uuid) throws ValidationException {
+        Validations.validateNotNull(eventType);
         timestamp = System.currentTimeMillis();
         this.uuid = uuid;
         this.eventType = eventType;
@@ -97,13 +99,12 @@ public final class Event implements Comparable<Event> {
      * 
      * <p>Note: this class has a natural ordering that is inconsistent with equals.
      * 
-     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities
-     * @throws NullPointerException when null argument is supplied
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object based on the associated priorities. If the accepted object is null, a positive integer is returned
      */
     @Override
-    public int compareTo(Event o) {
+    public int compareTo(final Event o) {
         if (null == o)
-            throw new NullPointerException();
+            return 1;
         final int res = eventPriority.compareTo(o.eventPriority);
         if (0 != res)
             return res;
@@ -117,10 +118,10 @@ public final class Event implements Comparable<Event> {
      * @return true if the objects are equal, or false otherwise
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
+        final Event event = (Event) o;
         return Objects.equals(eventType, event.eventType) && 
             Objects.equals(eventPriority, event.eventPriority) && 
             Objects.equals(eventPattern, event.eventPattern) && 

@@ -8,6 +8,9 @@ import java.util.function.Consumer;
 import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.demux.ConcurrentEventDemux;
 import com.jeactor.registry.RegistryService;
+import com.jeactor.validation.Validations;
+
+import jakarta.validation.ValidationException;
 
 /** Basic reactor implementation. */
 @ThreadSafe
@@ -44,12 +47,11 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
      * @return boolean value indicating wether the subscription succeeded or not
-     * @throws NullPointerException when null argument is supplied
+     * @throws ValidationException when null argument is supplied
      */
     @Override
-    public boolean register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
-        if (null == eventType || null == handler)
-            throw new NullPointerException();
+    public boolean register(final String eventType, final PriorityConsumer<Event> handler) throws ValidationException {
+        Validations.validateNotNull(eventType, handler);
 
         registryLock.lock();
         try {
@@ -65,12 +67,11 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * @param eventType 
      * @param handler
      * @return boolean value indicating wether the unsubscription succeeded or not
-     * @throws NullPointerException when null argument is supplied
+     * @throws ValidationException when null argument is supplied
      */
     @Override
-    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
-        if (null == eventType || null == handler)
-            throw new NullPointerException();
+    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) throws ValidationException {
+        Validations.validateNotNull(eventType, handler);
 
         registryLock.lock();
         try {        
@@ -84,13 +85,11 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * The method accepts an event to be processed into the reactor.
      * 
      * @param event an event be processed
-     * @throws NullPointerException when null argument is supplied
+     * @throws ValidationException when null argument is supplied
      */
     @Override
-    public void accept(final Event event) {
-        if (null == event)
-            throw new NullPointerException();     
-
+    public void accept(final Event event) throws ValidationException {
+        Validations.validateNotNull(event);
         eventDemultiplexor.accept(event);
     }
 
@@ -103,7 +102,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      */
     @Override
     public void run() {
-        synchronized(startedSynchorinzaionObject) {
+        synchronized (startedSynchorinzaionObject) {
             if (started)
                 return;
             started = true;

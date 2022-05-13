@@ -15,18 +15,6 @@ public class PriorityEventRegistryTest extends AbstractJeactorUnitTest {
     /** Creates default instance. */
     public PriorityEventRegistryTest() {}
 
-    /** The method tests that register() with null event type input throws NPE. */
-    @Test
-    public void testRegisterWithNullEventTypeThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new PriorityEventRegistry().register(null, new NopPriorityConsumer<Event>());});
-    }
-
-    /** The method tests that register() with null handler input throws NPE. */
-    @Test
-    public void testRegisterWithNullHandlerThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new PriorityEventRegistry().register("dummy", null);});
-    }
-
     /** The method tests that register() with new event type works as expected. */
     @Test
     public void testRegisterWithUnregisteredEventType() {
@@ -52,19 +40,6 @@ public class PriorityEventRegistryTest extends AbstractJeactorUnitTest {
         registry.register(eventType, consumer);
 
         assertTrue(registry.register(eventType, consumer));
-    }
-
-    /** The method tests that unregister() with null event type input throws NPE. */
-    @Test
-    public void testUnregisterWithNullEventTypeThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new PriorityEventRegistry().unregister(null, new NopPriorityConsumer<Event>());});
-
-    }
-
-    /** The method tests that unregister() with null handler input throws NPE. */
-    @Test
-    public void testUnregisterWithNullHandlerThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new PriorityEventRegistry().unregister("dummy", null);});
     }
 
     /** The method tests that unregister() with new event type works as expected. */
@@ -104,12 +79,6 @@ public class PriorityEventRegistryTest extends AbstractJeactorUnitTest {
         registry.register(eventType, new NopPriorityConsumer<Event>());
 
         assertTrue(registry.unregister(eventType, consumer));
-    }
-
-    /** The method tests that getRegistered() with null event type input throws NPE. */
-    @Test
-    public void testGetRegisteredWithNullEventTypeThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new PriorityEventRegistry().getRegistered(null);});
     }
 
     /** The method tests that getRegistered() with new event type returns null. */

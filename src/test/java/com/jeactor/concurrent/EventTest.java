@@ -10,12 +10,6 @@ import org.junit.jupiter.api.Test;
 public class EventTest extends AbstractJeactorUnitTest {
     /** Creates default instance. */
     public EventTest() {}
-
-    /** Tests that compareTo() with null input object throws NPE. */
-    @Test
-    public void testCompareToNullObjectThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new Event("dummy", Priority.NORMAL, null, null, UUID.randomUUID()).compareTo(null);});
-    }
  
     /** Tests that compareTo() with lower priority input object returns positive integer. */
     @Test

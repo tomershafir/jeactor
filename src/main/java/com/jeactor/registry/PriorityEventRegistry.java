@@ -23,13 +23,9 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
      * @return boolean value indicating wether the redistry state has been changed or not
-     * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public boolean register(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
-        if(null == eventType || null == handler)
-            throw new NullPointerException();
-
+    public boolean register(final String eventType, final PriorityConsumer<Event> handler) {
         PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
         if (null == eventHandlers) {
             eventHandlers = new PriorityQueue<PriorityConsumer<Event>>();
@@ -44,15 +40,11 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
      * @param eventType string event type identifier
      * @param handler a consumer of event to unregister
      * @return boolean value indicating wether the redistry state has been changed or not
-     * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) throws NullPointerException {
-        if (null == eventType || null == handler)
-            throw new NullPointerException();
-
+    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) {
         boolean flag = false;
-        PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
+        final PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
         if (null != eventHandlers) {
             flag = eventHandlers.remove(handler); 
             
@@ -67,13 +59,9 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
      * 
      * @param eventType a key by which the collection is returned
      * @return a collection of values registered with the accepted key in the registry, null is returned if the event type is not recorded in the registry
-     * @throws NullPointerException when null argument is supplied
      */
     @Override
-    public Collection<PriorityConsumer<Event>> getRegistered(final String eventType) throws NullPointerException {
-        if (null == eventType)
-            throw new NullPointerException();
-        
+    public Collection<PriorityConsumer<Event>> getRegistered(final String eventType) {
         final PriorityQueue<PriorityConsumer<Event>> tmp = registryData.get(eventType);
         if (null == tmp)
             return null;

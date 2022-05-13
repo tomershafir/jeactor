@@ -8,12 +8,6 @@ public class PriorityConsumerTest extends AbstractJeactorUnitTest {
     /** Creates default instance. */
     public PriorityConsumerTest() {}
    
-    /** Tests that compareTo() with null input object throws NPE. */
-    @Test
-    public void testCompareToNullObjectThrowsNPE() {
-        assertThrows(NullPointerException.class, ()->{new NopPriorityConsumer<String>().compareTo(null);});
-    }
-
     /** Tests that compareTo() with lower priority input object returns positive integer. */
     @Test
     public void testCompareToLowerPriorityObjectReturnsPositiveInt() {
