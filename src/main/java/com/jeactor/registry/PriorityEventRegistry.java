@@ -67,4 +67,28 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
             return null;
         return new PriorityQueue<PriorityConsumer<Event>>(tmp);
     }
+
+    /**
+     * Indicates wether this object equals to the accepted object.
+     * 
+     * @param o other object to compare this object to
+     * @return true if the objects are equal, or false otherwise
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final PriorityEventRegistry that = (PriorityEventRegistry) o;
+        return Objects.equals(registryData, that.registryData);
+    }
+
+    /**
+     * Generates a hash code value for the object.
+     * 
+     * @return an integer hash code value for the object
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(registryData);
+    }
 }

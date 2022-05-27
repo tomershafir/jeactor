@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadFactory;
 import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
 import com.jeactor.registry.PriorityEventRegistry;
 import com.jeactor.validation.Validations;
-
 import jakarta.validation.ValidationException;
 
 /**
