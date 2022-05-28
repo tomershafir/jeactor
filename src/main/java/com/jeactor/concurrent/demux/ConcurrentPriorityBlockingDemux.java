@@ -36,28 +36,4 @@ public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux {
     public Event get() throws InterruptedException {
         return priorityBlockingQueue.take();
     }
-
-    /**
-     * Indicates wether this object equals to the accepted object.
-     * 
-     * @param o other object to compare this object to
-     * @return true if the objects are equal, or false otherwise
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final PriorityBlockingQueue that = (PriorityBlockingQueue) o;
-        return Objects.equals(priorityBlockingQueue, that.priorityBlockingQueue);
-    }
-
-    /**
-     * Generates a hash code value for the object.
-     * 
-     * @return an integer hash code value for the object
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(priorityBlockingQueue);
-    }
 }

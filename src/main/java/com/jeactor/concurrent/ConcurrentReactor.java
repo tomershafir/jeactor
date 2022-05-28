@@ -7,9 +7,10 @@ import java.util.Collection;
 import java.util.function.Consumer;
 import com.jeactor.PriorityConsumer;
 import com.jeactor.concurrent.demux.ConcurrentEventDemux;
+import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
+import com.jeactor.registry.PriorityEventRegistry;
 import com.jeactor.registry.RegistryService;
 import com.jeactor.validation.Validations;
-
 import jakarta.validation.ValidationException;
 
 /** Basic reactor implementation. */
@@ -31,14 +32,12 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
      * 
      * @param taskExecutor a concurrent executor to use for execution of event handlers when events are dispatched
-     * @param eventDemultiplexor a demultiplexor to use for event demultiplexing
-     * @param eventRegistry a registry service object to be used by the reactor
      */
-    ConcurrentReactor(final Executor taskExecutor, final ConcurrentEventDemux eventDemultiplexor, final RegistryService<String, PriorityConsumer<Event>> eventRegistry) {
-        this.eventDemultiplexor = eventDemultiplexor; 
+    ConcurrentReactor(final Executor taskExecutor) {
+        this.eventDemultiplexor = new ConcurrentPriorityBlockingDemux(); 
         this.started = false;
         this.taskExecutor = taskExecutor;
-        this.eventRegistry =  eventRegistry;
+        this.eventRegistry =  new PriorityEventRegistry();
     }
 
     /**
@@ -146,5 +145,15 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
             // preserve interrupt status
             Thread.currentThread().interrupt();
         }
+    }
+
+    /**
+     * The method returns the class of the executor used by the reactor.
+     * 
+     * @return a class of the executor used by the reactor
+     */
+    @Override
+    public Class<? extends Executor> getExecutorClass() {
+        return taskExecutor.getClass();
     }
 }

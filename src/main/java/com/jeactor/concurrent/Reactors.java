@@ -3,8 +3,6 @@ package com.jeactor.concurrent;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import com.jeactor.concurrent.demux.ConcurrentPriorityBlockingDemux;
-import com.jeactor.registry.PriorityEventRegistry;
 import com.jeactor.validation.Validations;
 import jakarta.validation.ValidationException;
 
@@ -25,7 +23,7 @@ public final class Reactors {
      * @return a new synchronous thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newSyncConcurrentReactor() {
-        return new ConcurrentReactor(new ConcurrentSyncExecutor(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(new ConcurrentSyncExecutor());
     }
 
     /**
@@ -34,7 +32,7 @@ public final class Reactors {
      * @return a new cached thread pool thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor() {
-        return new ConcurrentReactor(Executors.newCachedThreadPool(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(Executors.newCachedThreadPool());
     }
 
     /**
@@ -46,7 +44,7 @@ public final class Reactors {
      */
     public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
         Validations.validateNotNull(threadFactory);
-        return new ConcurrentReactor(Executors.newCachedThreadPool(threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(Executors.newCachedThreadPool(threadFactory));
     }
 
     /**
@@ -58,7 +56,7 @@ public final class Reactors {
      */
     public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(final int noThreads) throws ValidationException {
         Validations.validatePositive(noThreads);
-        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads));
     }
 
     /**
@@ -72,7 +70,7 @@ public final class Reactors {
     public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(final int noThreads, final ThreadFactory threadFactory) throws ValidationException {
         Validations.validateNotNull(threadFactory);
         Validations.validatePositive(noThreads);
-        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads, threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads, threadFactory));
     }
 
     /**
@@ -81,7 +79,7 @@ public final class Reactors {
      * @return a new single worker thread-safe reactor
      */
     public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor() {
-        return new ConcurrentReactor(Executors.newSingleThreadExecutor(), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(Executors.newSingleThreadExecutor());
     }
 
     /**
@@ -93,7 +91,7 @@ public final class Reactors {
      */
     public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
         Validations.validateNotNull(threadFactory);
-        return new ConcurrentReactor(Executors.newSingleThreadExecutor(threadFactory), new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(Executors.newSingleThreadExecutor(threadFactory));
     }
 
     /**
@@ -105,6 +103,6 @@ public final class Reactors {
      */
     public static AbstractConcurrentProxyReactor newConcurrentReactor(final Executor executor) throws ValidationException {
         Validations.validateNotNull(executor);
-        return new ConcurrentReactor(executor, new ConcurrentPriorityBlockingDemux(), new PriorityEventRegistry());
+        return new ConcurrentReactor(executor);
     }
 }

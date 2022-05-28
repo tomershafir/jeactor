@@ -1,6 +1,8 @@
 package com.jeactor.concurrent;
 
 import java.util.function.Consumer;
+
+import com.jeactor.ObservableReactor;
 import com.jeactor.PriorityConsumer;
 import com.jeactor.registry.Registry;
 
@@ -12,4 +14,4 @@ import com.jeactor.registry.Registry;
  * <p>Shutdown must be implemented via interrupts.
  */
 @ThreadSafe
-public interface AbstractConcurrentProxyReactor extends Runnable, Consumer<Event>, Registry<String, PriorityConsumer<Event>> {}
+public interface AbstractConcurrentProxyReactor extends Runnable, Consumer<Event>, Registry<String, PriorityConsumer<Event>>, ObservableReactor {}

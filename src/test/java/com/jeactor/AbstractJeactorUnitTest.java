@@ -1,5 +1,7 @@
 package com.jeactor;
 
+import java.util.concurrent.Executor;
+
 /**
  * Abstract jeactor unit test class.
  * 
@@ -10,7 +12,7 @@ public abstract class AbstractJeactorUnitTest extends AbstractUnitTest {
     protected AbstractJeactorUnitTest() {}
 
     /**
-     * Represents a no-peration(do nothing) consumer that has a priority.
+     * Represents a no-operation(do nothing) consumer that has a priority.
      * 
      * @param <T> consumed data type
      */
@@ -36,5 +38,17 @@ public abstract class AbstractJeactorUnitTest extends AbstractUnitTest {
          */
         @Override
         public void accept(final T data) {}
+    }
+
+    /**
+     * Represents a no-operation(do nothing) dummy executor.
+     */
+    protected static class NopExecutor implements Executor {
+        /** Creates a no-operation(do nothing) dummy executor. */
+        public NopExecutor() {}
+        
+        /** Dummy run(). */
+        @Override
+        public void execute(final Runnable r) {}
     }
 }
