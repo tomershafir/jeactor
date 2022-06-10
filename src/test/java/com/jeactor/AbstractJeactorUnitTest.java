@@ -40,9 +40,7 @@ public abstract class AbstractJeactorUnitTest extends AbstractUnitTest {
         public void accept(final T data) {}
     }
 
-    /**
-     * Represents a no-operation(do nothing) dummy executor.
-     */
+    /** Represents a no-operation(do nothing) dummy executor. */
     protected static class NopExecutor implements Executor {
         /** Creates a no-operation(do nothing) dummy executor. */
         public NopExecutor() {}

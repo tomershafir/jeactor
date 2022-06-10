@@ -1,7 +1,6 @@
 package com.jeactor.concurrent;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
