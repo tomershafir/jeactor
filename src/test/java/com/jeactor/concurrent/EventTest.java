@@ -11,6 +11,18 @@ public class EventTest extends AbstractJeactorUnitTest {
     /** Creates default instance. */
     public EventTest() {}
  
+    /** The method tests that an event cannot be created with null event type. */
+    @Test
+    public void testEventWithNullEventTypeThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, ()->new Event(null, Priority.NORMAL, null, null, UUID.randomUUID()));
+    }
+
+    /** The method tests that an event cannot be created with null uuid. */
+    @Test
+    public void testEventWithNullUUIDThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, ()->new Event("dummy", Priority.NORMAL, null, null, null));
+    }
+
     /** Tests that compareTo() with lower priority input object returns positive integer. */
     @Test
     public void testCompareToLowerPriorityObjectReturnsPositiveInt() {

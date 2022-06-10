@@ -25,11 +25,11 @@ public final class Event implements Comparable<Event> {
      * @param eventPriority an EventPriority constant that represents the priority of the event, if null default to Normal
      * @param eventPattern an EventPattern describing the pattern of the event
      * @param jsonPayload an immutable json string that contains event payload
-     * @param uuid an uuid for the event
-     * @throws ValidationException when null eventType is supplied
+     * @param uuid a uuid for the event
+     * @throws ValidationException when null eventType or uuid supplied
      */
     public Event(final String eventType, final Priority eventPriority, final EventPattern eventPattern, final String jsonPayload, final UUID uuid) throws ValidationException {
-        Validations.validateNotNull(eventType);
+        Validations.validateNotNull(eventType, uuid);
         timestamp = System.currentTimeMillis();
         this.uuid = uuid;
         this.eventType = eventType;
