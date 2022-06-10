@@ -73,6 +73,6 @@ public abstract class PriorityConsumer<T> implements Consumer<T>, Comparable<Pri
     public String toString() {
         return "PriorityConsumer{" +
                 "consumerPriority=" + consumerPriority +
-                '}';
+                "}";
     }
 }
