@@ -2,10 +2,9 @@ package org.jeactor;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.UUID;
-
-import org.jeactor.Event;
-import org.jeactor.Priority;
 import org.junit.jupiter.api.Test;
+
+import jakarta.validation.ValidationException;
 
 /** Unit test of Event. */
 public class EventTest extends AbstractJeactorUnitTest {
@@ -14,14 +13,14 @@ public class EventTest extends AbstractJeactorUnitTest {
  
     /** The method tests that an event cannot be created with null event type. */
     @Test
-    public void testEventWithNullEventTypeThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, ()->new Event(null, Priority.NORMAL, null, null, UUID.randomUUID()));
+    public void testEventWithNullEventTypeThrowsValidationException() {
+        assertThrows(ValidationException.class, ()->new Event(null, Priority.NORMAL, null, null, UUID.randomUUID()));
     }
 
     /** The method tests that an event cannot be created with null uuid. */
     @Test
-    public void testEventWithNullUUIDThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, ()->new Event("dummy", Priority.NORMAL, null, null, null));
+    public void testEventWithNullUUIDThrowsValidationException() {
+        assertThrows(ValidationException.class, ()->new Event("dummy", Priority.NORMAL, null, null, null));
     }
 
     /** Tests that compareTo() with lower priority input object returns positive integer. */

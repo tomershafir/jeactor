@@ -68,6 +68,6 @@ public class ValidationsTest {
     /** The method tests that validatePositive() with non null input with positive integer does not throw validation exception. */
     @Test
     public void testValidatePositiveWithPositiveIntDoesNotThrowValidationException() {
-        assertDoesNotThrow(()->Validations.validatePositive(new Integer[1]));
+        assertDoesNotThrow(()->Validations.validatePositive(new Integer[]{1}));
     }
 }

@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
-
 import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.demux.ConcurrentEventDemux;
 import org.jeactor.demux.ConcurrentPriorityBlockingDemux;

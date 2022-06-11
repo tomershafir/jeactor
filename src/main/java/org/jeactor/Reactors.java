@@ -3,7 +3,6 @@ package org.jeactor;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-
 import org.jeactor.concurrent.ConcurrentSyncExecutor;
 import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.validation.Validations;

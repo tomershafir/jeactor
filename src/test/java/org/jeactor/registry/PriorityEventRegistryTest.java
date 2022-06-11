@@ -4,7 +4,6 @@ import org.jeactor.AbstractJeactorUnitTest;
 import org.jeactor.Event;
 import org.jeactor.Priority;
 import org.jeactor.PriorityConsumer;
-
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Collection;

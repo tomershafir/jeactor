@@ -1,11 +1,9 @@
 package org.jeactor;
 
 import java.util.Objects;
-
 import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.validation.Validations;
 import jakarta.validation.ValidationException;
-
 import java.util.UUID;
 
 /** Represents an immutable event. */

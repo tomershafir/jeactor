@@ -1,7 +1,6 @@
 package org.jeactor.demux;
 
 import java.util.function.Consumer;
-
 import org.jeactor.Event;
 import org.jeactor.concurrent.ThreadSafe;
 
