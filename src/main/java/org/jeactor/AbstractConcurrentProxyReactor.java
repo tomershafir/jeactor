@@ -1,8 +1,8 @@
-package org.jeactor.concurrent;
+package org.jeactor;
 
 import java.util.function.Consumer;
-import org.jeactor.ObservableReactor;
-import org.jeactor.PriorityConsumer;
+
+import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.registry.Registry;
 
 /**

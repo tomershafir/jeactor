@@ -1,7 +1,7 @@
 package org.jeactor;
 
 import java.util.UUID;
-import org.jeactor.concurrent.Event;
+
 import org.jeactor.concurrent.NotThreadSafe;
 
 /** Basic event builder. */

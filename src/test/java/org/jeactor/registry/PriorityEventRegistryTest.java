@@ -1,9 +1,10 @@
 package org.jeactor.registry;
 
 import org.jeactor.AbstractJeactorUnitTest;
+import org.jeactor.Event;
 import org.jeactor.Priority;
 import org.jeactor.PriorityConsumer;
-import org.jeactor.concurrent.Event;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Collection;

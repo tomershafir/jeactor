@@ -1,8 +1,8 @@
-package org.jeactor.concurrent;
+package org.jeactor;
 
 import java.util.Objects;
-import org.jeactor.EventPattern;
-import org.jeactor.Priority;
+
+import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.validation.Validations;
 import jakarta.validation.ValidationException;
 

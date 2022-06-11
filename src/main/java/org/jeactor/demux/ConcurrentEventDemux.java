@@ -1,7 +1,8 @@
 package org.jeactor.demux;
 
 import java.util.function.Consumer;
-import org.jeactor.concurrent.Event;
+
+import org.jeactor.Event;
 import org.jeactor.concurrent.ThreadSafe;
 
 /** Represents an event demultiplexor that consume events from event sources and supply events to the dispatcher. */

@@ -1,4 +1,4 @@
-package org.jeactor.concurrent;
+package org.jeactor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -7,7 +7,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import org.jeactor.AbstractJeactorUnitTest;
+
+import org.jeactor.Reactors;
+import org.jeactor.concurrent.ConcurrentSyncExecutor;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ValidationException;
 

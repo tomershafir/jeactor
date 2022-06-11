@@ -4,9 +4,9 @@ import java.util.concurrent.Executor;
 
 /** An executer that executes task synchronously in the caller thread. */
 @ThreadSafe
-class ConcurrentSyncExecutor implements Executor { // no in memory state so thread safe 
+public class ConcurrentSyncExecutor implements Executor { // no in memory state so thread safe 
     /** Creates default synchronous executor. */
-    ConcurrentSyncExecutor() {}
+    public ConcurrentSyncExecutor() {}
 
     /**
      * The method executes synchronously the sumbitted task.

@@ -1,8 +1,9 @@
-package org.jeactor.concurrent;
+package org.jeactor;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.UUID;
-import org.jeactor.AbstractJeactorUnitTest;
+
+import org.jeactor.Event;
 import org.jeactor.Priority;
 import org.junit.jupiter.api.Test;
 
