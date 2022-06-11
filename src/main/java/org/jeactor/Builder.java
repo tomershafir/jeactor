@@ -7,7 +7,7 @@ package org.jeactor;
  */
 public interface Builder<T> {
     /**
-     * The method builds an instance.
+     * Builds an instance.
      * 
      * @return an instance of type T
      */

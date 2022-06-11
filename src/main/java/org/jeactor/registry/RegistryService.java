@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public interface RegistryService<K, V> extends Registry<K, V> {
     /**
-     * The method returns a collection of objects registered with the accepted key.
+     * Returns a collection of objects registered with the accepted key.
      * 
      * @param key a key by which the collection is returned
      * @return a collection of values registered with the accepted key in the registry

@@ -9,7 +9,7 @@ public final class Validations {
     private Validations() {}
 
     /**
-     * The method validates that the accepted objects are not null.
+     * Validates that the accepted objects are not null.
      * 
      * @param objects object varargs to validate
      * @throws ValidationException if objects is null or one of it's members is null. If objects is empty, an exception won't be thrown
@@ -22,7 +22,7 @@ public final class Validations {
     }
 
     /**
-     * The method validates that the accepted objects are positive integers.
+     * Validates that the accepted objects are positive integers.
      * 
      * @param objects object varargs to validate
      * @throws ValidationException if objects is null or one of it's members is null, negative integer or 0. If objects is empty, an exception won't be thrown

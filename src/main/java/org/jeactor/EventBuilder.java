@@ -75,6 +75,7 @@ public class EventBuilder implements Builder<Event> { // counts on Event's valid
      * 
      * @return an instance of type T
      */
+    @Override
     public Event build() {
         return new Event(eventType, eventPriority, eventPattern, jsonPayload, uuid);
     }

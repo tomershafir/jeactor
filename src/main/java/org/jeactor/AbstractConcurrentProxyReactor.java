@@ -5,7 +5,7 @@ import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.registry.Registry;
 
 /**
- * An abstraction of a reactor. Generally a reactor should support init, register, unregister, run, shutdown and accept operations.
+ * Abstraction of a reactor. Generally a reactor should support init, register, unregister, run, shutdown and accept operations.
  * 
  * <p>Initialization must be implemented via object construction.
  * 

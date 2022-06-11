@@ -37,7 +37,7 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
-     * The method returns the type of this event.
+     * Returns the type of this event.
      * 
      * @return a string type of this event
      */
@@ -46,7 +46,7 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
-     * The method returns the priority of this event.
+     * Returns the priority of this event.
      * 
      * @return an EventPriority of this event
      */
@@ -55,7 +55,7 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
-     * The method returns the pattern of this event.
+     * Returns the pattern of this event.
      * 
      * @return an EventPattern of this event
      */
@@ -64,7 +64,7 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
-     * The method returns the payload of this event.
+     * Returns the payload of this event.
      * 
      * @return a json string that forms of this event
      */
@@ -73,7 +73,7 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
-     * The method returns the timestamp of this event.
+     * Returns the timestamp of this event.
      * 
      * @return a long timestamp of this event
      */
@@ -82,7 +82,7 @@ public final class Event implements Comparable<Event> {
     }
 
     /**
-     * The method returns the uuid of this event.
+     * Returns the uuid of this event.
      * 
      * @return a uuid of this event
      */

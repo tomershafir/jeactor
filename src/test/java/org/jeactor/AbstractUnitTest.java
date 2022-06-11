@@ -1,7 +1,8 @@
 package org.jeactor;
 
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import org.mockito.Mockito;
-import static org.mockito.Mockito.*;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -28,20 +29,20 @@ public abstract class AbstractUnitTest {
     protected AbstractUnitTest() {}
 
     /**
-     * Hook method that is executed after each test case execution in the unit test. May be overriden by concrete unit tests.
+     * Executed after each test case execution in the unit test. May be overriden by concrete unit tests.
      * 
      * <p> The logic is executed first before any default behaviour.
      */
     protected void afterEach() {}
 
     /**
-     * Hook method that is executed before each test case execution in the unit test. May be overriden by concrete unit tests.
+     * Executed before each test case execution in the unit test. May be overriden by concrete unit tests.
      * 
      * <p> The logic is executed first before any default behaviour.
      */
     protected void beforeEach() {}
 
-    /** The method that is executed before each test case execution in the unit test. */
+    /** Executed before each test case execution in the unit test. */
     @BeforeEach
     public final void execBeforeEach() {
         // must be called first (checkout beforeEach() API documentation)
@@ -59,7 +60,7 @@ public abstract class AbstractUnitTest {
         Mockito.framework().addListener(mockCreationListener);
     }
 
-    /** The method that is executed after each test case execution in the unit test. */
+    /** Executed after each test case execution in the unit test. */
     @AfterEach
     public final void execAfterEach() throws Exception {
         // must be called first (checkout afterEach() API documentation)

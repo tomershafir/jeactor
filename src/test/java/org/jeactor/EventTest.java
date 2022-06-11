@@ -1,9 +1,11 @@
 package org.jeactor;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-
 import jakarta.validation.ValidationException;
 
 /** Unit test of Event. */
@@ -11,13 +13,13 @@ public class EventTest extends AbstractJeactorUnitTest {
     /** Creates default instance. */
     public EventTest() {}
  
-    /** The method tests that an event cannot be created with null event type. */
+    /** Tests that an event cannot be created with null event type. */
     @Test
     public void testEventWithNullEventTypeThrowsValidationException() {
         assertThrows(ValidationException.class, ()->new Event(null, Priority.NORMAL, null, null, UUID.randomUUID()));
     }
 
-    /** The method tests that an event cannot be created with null uuid. */
+    /** Tests that an event cannot be created with null uuid. */
     @Test
     public void testEventWithNullUUIDThrowsValidationException() {
         assertThrows(ValidationException.class, ()->new Event("dummy", Priority.NORMAL, null, null, null));

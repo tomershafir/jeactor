@@ -1,6 +1,7 @@
 package org.jeactor.concurrent;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -13,7 +14,7 @@ public class ConcurrentSyncExecutorTest extends AbstractJeactorUnitTest {
     /** Creates default unit test instance. */
     public ConcurrentSyncExecutorTest() {}
 
-    /** The method tests that execute() operates in the calling thread. */
+    /** Tests that execute() operates in the calling thread. */
     @Test
     public void testExecuteOperatesInCallingThread() {
         final Lock lock = new ReentrantLock();

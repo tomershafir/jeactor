@@ -20,7 +20,7 @@ public final class Reactors {
     private Reactors() {}
 
     /**
-     * A factory method that returns a new synchronous thread-safe reactor.
+     * Returns a new synchronous thread-safe reactor.
      * 
      * @return a new synchronous thread-safe reactor
      */
@@ -29,7 +29,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new cached thread pool thread-safe reactor.
+     * Returns a new cached thread pool thread-safe reactor.
      * 
      * @return a new cached thread pool thread-safe reactor
      */
@@ -38,7 +38,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new cached thread pool thread-safe reactor.
+     * Returns a new cached thread pool thread-safe reactor.
      * 
      * @param threadFactory a thread factory insance to be used for thread creation
      * @return a new cached thread pool thread-safe reactor
@@ -50,7 +50,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new fixed thread pool thread-safe reactor.
+     * Returns a new fixed thread pool thread-safe reactor.
      * 
      * @param noThreads an integer pool size 
      * @return a new fixed thread pool thread-safe reactor
@@ -62,7 +62,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new fixed thread pool thread-safe reactor.
+     * Returns a new fixed thread pool thread-safe reactor.
      * 
      * @param noThreads an integer pool size 
      * @param threadFactory a thread factory insance to be used for thread creation
@@ -76,7 +76,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new single worker thread-safe reactor.
+     * Returns a new single worker thread-safe reactor.
      * 
      * @return a new single worker thread-safe reactor
      */
@@ -85,7 +85,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new single worker thread-safe reactor.
+     * Returns a new single worker thread-safe reactor.
      * 
      * @param threadFactory a thread factory insance to be used for thread creation
      * @return a new single worker thread-safe reactor
@@ -97,7 +97,7 @@ public final class Reactors {
     }
 
     /**
-     * A factory method that returns a new thread-safe reactor with the accepted executor.
+     * Returns a new thread-safe reactor with the accepted executor.
      * 
      * @param executor an executor to be used by the reactor
      * @return a new synchronous thread-safe reactor

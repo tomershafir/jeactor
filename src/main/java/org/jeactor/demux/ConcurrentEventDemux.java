@@ -8,7 +8,7 @@ import org.jeactor.concurrent.ThreadSafe;
 @ThreadSafe
 public interface ConcurrentEventDemux extends Consumer<Event> {
     /**
-     * The method returns an accepted event.
+     * Returns an accepted event.
      * 
      * @return accepted event
      * @throws InterruptedException if interrupted while waiting     

@@ -18,7 +18,7 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
     }
 
     /**
-     * The method subscribes an handler with an event type.
+     * Subscribes an handler with an event type.
      * 
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
@@ -35,7 +35,7 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
     }
 
     /**
-     * The method unsubscribes an handler with an event type.
+     * Unsubscribes an handler with an event type.
      * 
      * @param eventType string event type identifier
      * @param handler a consumer of event to unregister
@@ -55,7 +55,7 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
     }
 
     /**
-     * The method returns a collection of objects registered with the accepted key.
+     * Returns a collection of objects registered with the accepted key.
      * 
      * @param eventType a key by which the collection is returned
      * @return a collection of values registered with the accepted key in the registry, null is returned if the event type is not recorded in the registry

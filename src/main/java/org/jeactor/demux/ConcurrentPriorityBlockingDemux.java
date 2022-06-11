@@ -17,7 +17,7 @@ public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux {
     }
 
     /**
-     * The method accepts an event to demultiplex.
+     * Accepts an event to demultiplex.
      * 
      * @param event an event to demultiplex
      */
@@ -26,12 +26,6 @@ public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux {
         priorityBlockingQueue.add(event);
     }
 
-    /**
-     * The method returns an accepted event.
-     * 
-     * @return accepted event
-     * @throws InterruptedException if interrupted while waiting
-     */
     @Override
     public Event get() throws InterruptedException {
         return priorityBlockingQueue.take();

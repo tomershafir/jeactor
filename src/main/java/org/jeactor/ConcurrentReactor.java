@@ -41,7 +41,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     }
 
     /**
-     * The method subscribes an handler with an event type.
+     * Subscribes an handler with an event type.
      * 
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
@@ -61,7 +61,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     }
 
     /**
-     * The method unsubscribes an handler with an event type.
+     * Unsubscribes an handler with an event type.
      * 
      * @param eventType 
      * @param handler
@@ -81,7 +81,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     }
 
     /**
-     * The method accepts an event to be processed into the reactor.
+     * Accepts an event to be processed into the reactor.
      * 
      * @param event an event be processed
      * @throws ValidationException when null argument is supplied
@@ -93,7 +93,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     }
 
     /**
-     * The method starts the main event loop of the reactor within the current thread.
+     * Starts the main event loop of the reactor within the current thread.
      * 
      * <p>To stop the reactor, interrupt the executor thread.
      * 
@@ -147,11 +147,6 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
         }
     }
 
-    /**
-     * The method returns the class of the executor used by the reactor.
-     * 
-     * @return a class of the executor used by the reactor
-     */
     @Override
     public Class<? extends Executor> getExecutorClass() {
         return taskExecutor.getClass();
