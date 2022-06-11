@@ -1,4 +1,4 @@
-package org.jeactor.concurrent.demux;
+package org.jeactor.demux;
 
 import java.util.function.Consumer;
 import org.jeactor.concurrent.Event;
