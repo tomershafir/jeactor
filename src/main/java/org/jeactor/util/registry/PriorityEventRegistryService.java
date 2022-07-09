@@ -1,11 +1,12 @@
-package org.jeactor.registry;
+package org.jeactor.util.registry;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-import org.jeactor.Event;
-import org.jeactor.PriorityConsumer;
-import org.jeactor.concurrent.NotThreadSafe;
+
+import org.jeactor.core.Event;
+import org.jeactor.core.PriorityConsumer;
+import org.jeactor.util.concurrent.NotThreadSafe;
 
 /** Registry that manages the subscription of event consumers to event types. */
 @NotThreadSafe

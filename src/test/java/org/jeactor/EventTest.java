@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
+
+import org.jeactor.core.Event;
+import org.jeactor.core.Priority;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ValidationException;
 

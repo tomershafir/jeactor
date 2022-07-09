@@ -1,8 +1,9 @@
-package org.jeactor.concurrent.demux;
+package org.jeactor.util.concurrent.demux;
 
 import java.util.concurrent.PriorityBlockingQueue;
-import org.jeactor.Event;
-import org.jeactor.concurrent.ThreadSafe;
+
+import org.jeactor.core.Event;
+import org.jeactor.util.concurrent.ThreadSafe;
 
 /** 
  * Represents a blocking event demultiplexor that supports prioritization.

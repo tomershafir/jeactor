@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jeactor.AbstractJeactorUnitTest;
-import org.jeactor.Event;
-import org.jeactor.Priority;
-import org.jeactor.PriorityConsumer;
+import org.jeactor.core.Event;
+import org.jeactor.core.Priority;
+import org.jeactor.core.PriorityConsumer;
+import org.jeactor.util.registry.PriorityEventRegistryService;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;

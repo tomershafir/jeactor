@@ -1,4 +1,4 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import java.util.concurrent.Executor;
 

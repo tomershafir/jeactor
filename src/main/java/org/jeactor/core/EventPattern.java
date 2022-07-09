@@ -1,4 +1,4 @@
-package org.jeactor;
+package org.jeactor.core;
 
 /** Reresents event patterns. */
 public enum EventPattern {

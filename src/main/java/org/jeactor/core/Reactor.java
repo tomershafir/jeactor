@@ -1,8 +1,9 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import java.util.function.Consumer;
-import org.jeactor.concurrent.ThreadSafe;
-import org.jeactor.registry.Registry;
+
+import org.jeactor.util.concurrent.ThreadSafe;
+import org.jeactor.util.registry.Registry;
 
 /**
  * Represents a reactor. 

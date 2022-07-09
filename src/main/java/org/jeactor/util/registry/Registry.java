@@ -1,6 +1,6 @@
-package org.jeactor.registry;
+package org.jeactor.util.registry;
 
-import org.jeactor.concurrent.NotThreadSafe;
+import org.jeactor.util.concurrent.NotThreadSafe;
 
 /**
  * Represents an object that supports registration of values to keys.

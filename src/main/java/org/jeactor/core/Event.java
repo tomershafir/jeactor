@@ -1,8 +1,10 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import java.util.Objects;
-import org.jeactor.concurrent.ThreadSafe;
-import org.jeactor.validation.Validations;
+
+import org.jeactor.util.concurrent.ThreadSafe;
+import org.jeactor.util.validation.Validations;
+
 import jakarta.validation.ValidationException;
 import java.util.UUID;
 

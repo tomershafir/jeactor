@@ -1,16 +1,18 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
-import org.jeactor.concurrent.ThreadSafe;
-import org.jeactor.concurrent.demux.EventDemux;
-import org.jeactor.concurrent.demux.PriorityBlockingEventDemux;
-import org.jeactor.registry.PriorityEventRegistryService;
-import org.jeactor.registry.RegistryService;
-import org.jeactor.validation.Validations;
+
+import org.jeactor.util.concurrent.ThreadSafe;
+import org.jeactor.util.concurrent.demux.EventDemux;
+import org.jeactor.util.concurrent.demux.PriorityBlockingEventDemux;
+import org.jeactor.util.registry.PriorityEventRegistryService;
+import org.jeactor.util.registry.RegistryService;
+import org.jeactor.util.validation.Validations;
+
 import jakarta.validation.ValidationException;
 
 /** Basic reactor implementation. */

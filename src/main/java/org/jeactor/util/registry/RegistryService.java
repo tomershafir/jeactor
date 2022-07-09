@@ -1,7 +1,8 @@
-package org.jeactor.registry;
+package org.jeactor.util.registry;
 
 import java.util.Collection;
-import org.jeactor.concurrent.NotThreadSafe;
+
+import org.jeactor.util.concurrent.NotThreadSafe;
 
 /**
  * Extended registry that provides additional utilities.

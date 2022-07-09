@@ -8,7 +8,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import org.jeactor.concurrent.SynchronousExecutor;
+
+import org.jeactor.core.Reactors;
+import org.jeactor.util.concurrent.SynchronousExecutor;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ValidationException;
 

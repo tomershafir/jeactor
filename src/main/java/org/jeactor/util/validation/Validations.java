@@ -1,4 +1,4 @@
-package org.jeactor.validation;
+package org.jeactor.util.validation;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

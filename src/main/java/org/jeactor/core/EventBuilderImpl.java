@@ -1,7 +1,8 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import java.util.UUID;
-import org.jeactor.concurrent.NotThreadSafe;
+
+import org.jeactor.util.concurrent.NotThreadSafe;
 
 /** Event builder implementation. */
 @NotThreadSafe

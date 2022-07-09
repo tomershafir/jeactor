@@ -3,8 +3,9 @@ package org.jeactor.validations;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.jeactor.util.validation.Validations;
 import org.junit.jupiter.api.Test;
-import org.jeactor.validation.Validations;
+
 import jakarta.validation.ValidationException;
 
 /** Unit test of Validations. */

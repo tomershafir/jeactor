@@ -1,4 +1,4 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import java.util.Objects;
 import java.util.function.Consumer;

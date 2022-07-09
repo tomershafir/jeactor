@@ -2,6 +2,9 @@ package org.jeactor;
 
 import java.util.concurrent.Executor;
 
+import org.jeactor.core.Priority;
+import org.jeactor.core.PriorityConsumer;
+
 /**
  * Abstract jeactor unit test class.
  * 

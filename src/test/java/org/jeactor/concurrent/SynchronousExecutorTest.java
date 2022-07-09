@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.jeactor.AbstractJeactorUnitTest;
+import org.jeactor.util.concurrent.SynchronousExecutor;
 import org.junit.jupiter.api.Test;
 
 /** Unit test of SynchronousExecutor. */

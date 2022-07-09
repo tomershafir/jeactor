@@ -1,4 +1,4 @@
-package org.jeactor;
+package org.jeactor.core;
 
 /**
  * Represents a builder.
