@@ -26,6 +26,12 @@ public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux {
         priorityBlockingQueue.add(event);
     }
 
+    /**
+     * Returns an accepted event.
+     * 
+     * @return accepted event
+     * @throws InterruptedException if interrupted while waiting     
+     */
     @Override
     public Event get() throws InterruptedException {
         return priorityBlockingQueue.take();
