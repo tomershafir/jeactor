@@ -9,10 +9,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.jeactor.AbstractJeactorUnitTest;
 import org.junit.jupiter.api.Test;
 
-/** Unit test of ConcurrentSyncExecutor. */
-public class ConcurrentSyncExecutorTest extends AbstractJeactorUnitTest {
+/** Unit test of SynchronousExecutor. */
+public class SynchronousExecutorTest extends AbstractJeactorUnitTest {
     /** Creates default unit test instance. */
-    public ConcurrentSyncExecutorTest() {}
+    public SynchronousExecutorTest() {}
 
     /** Tests that execute() operates in the calling thread. */
     @Test
@@ -21,7 +21,7 @@ public class ConcurrentSyncExecutorTest extends AbstractJeactorUnitTest {
         lock.lock(); // no need to unlock() because each thread creates a new lock instance
         
         final List<String> actual = new ArrayList<>();
-        new ConcurrentSyncExecutor().execute(()->{
+        new SynchronousExecutor().execute(()->{
             lock.lock();
             actual.add("$");
         });

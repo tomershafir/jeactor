@@ -1,13 +1,15 @@
 package org.jeactor.registry;
 
 import java.util.Collection;
+import org.jeactor.concurrent.NotThreadSafe;
 
 /**
- * Extension of registry that provides additional utilities.
+ * Extended registry that provides additional utilities.
  * 
  * @param <K> type of keys to which values are registered
  * @param <V> type of values to be registered
  */
+@NotThreadSafe
 public interface RegistryService<K, V> extends Registry<K, V> {
     /**
      * Returns a collection of objects registered with the accepted key.

@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import jakarta.validation.ValidationException;
 
-/** Validation utilities class. */
+/** Validation utility. */
 public final class Validations {
     private Validations() {}
 

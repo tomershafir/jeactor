@@ -1,11 +1,14 @@
 package org.jeactor.registry;
 
+import org.jeactor.concurrent.NotThreadSafe;
+
 /**
  * Represents an object that supports registration of values to keys.
  * 
  * @param <K> type of keys to which values are registered
  * @param <V> type of values to be registered
  */
+@NotThreadSafe
 public interface Registry<K, V> {
     /**
      * Registers the accepted value with the accepted key.

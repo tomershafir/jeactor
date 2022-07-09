@@ -9,16 +9,16 @@ import org.jeactor.concurrent.NotThreadSafe;
 
 /** Registry that manages the subscription of event consumers to event types. */
 @NotThreadSafe
-public class PriorityEventRegistry implements RegistryService<String, PriorityConsumer<Event>> {
+public class PriorityEventRegistryService implements RegistryService<String, PriorityConsumer<Event>> {
     private final HashMap<String, PriorityQueue<PriorityConsumer<Event>>> registryData;
 
-    /** Creates empty event registry. */
-    public PriorityEventRegistry() {
+    /** Creates default instance. */
+    public PriorityEventRegistryService() {
         registryData = new HashMap<>();
     }
 
     /**
-     * Subscribes an handler with an event type.
+     * Registeres an handler to the accepted event type.
      * 
      * @param eventType string event type identifier
      * @param handler a consumer of event to associate with the supplied event type
@@ -33,9 +33,9 @@ public class PriorityEventRegistry implements RegistryService<String, PriorityCo
         }
         return eventHandlers.add(handler);
     }
-
+    
     /**
-     * Unsubscribes an handler with an event type.
+     * Unregisteres an handler from the accepted event type.
      * 
      * @param eventType string event type identifier
      * @param handler a consumer of event to unregister

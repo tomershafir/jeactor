@@ -1,9 +1,9 @@
 package org.jeactor;
 
 /**
- * Represents a builder object.
+ * Represents a builder.
  * 
- * @param <T> type of the object to build
+ * @param <T> type to build
  */
 public interface Builder<T> {
     /**

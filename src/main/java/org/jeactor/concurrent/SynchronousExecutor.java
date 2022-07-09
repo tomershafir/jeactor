@@ -2,14 +2,14 @@ package org.jeactor.concurrent;
 
 import java.util.concurrent.Executor;
 
-/** Executer that executes task synchronously in the caller thread. */
-@ThreadSafe
-public class ConcurrentSyncExecutor implements Executor { // no in memory state so thread safe 
+/** Executor that executes task synchronously in the caller thread. */
+@ThreadSafe // no in-memory state so thread safe
+public class SynchronousExecutor implements Executor { 
     /** Creates default synchronous executor. */
-    public ConcurrentSyncExecutor() {}
+    public SynchronousExecutor() {}
 
     /**
-     * Executes synchronously the sumbitted task.
+     * Executes the sumbitted task synchronously.
      * 
      * @param task a runnable task to execute 
      */

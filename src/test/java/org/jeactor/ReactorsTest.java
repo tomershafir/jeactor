@@ -8,7 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import org.jeactor.concurrent.ConcurrentSyncExecutor;
+import org.jeactor.concurrent.SynchronousExecutor;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ValidationException;
 
@@ -20,7 +20,7 @@ public class ReactorsTest extends AbstractJeactorUnitTest {
     /** Tests that new synchronous concurrent reactor is created correctly. */
     @Test
     public void testNewSyncConcurrentReactor() {
-        assertEquals(ConcurrentSyncExecutor.class, Reactors.newSyncConcurrentReactor().getExecutorClass());
+        assertEquals(SynchronousExecutor.class, Reactors.newSyncConcurrentReactor().getExecutorClass());
     }
 
     /** Tests that new cached thread pool concurrent reactor is created correctly. */

@@ -6,17 +6,17 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
 import org.jeactor.concurrent.ThreadSafe;
-import org.jeactor.demux.ConcurrentEventDemux;
-import org.jeactor.demux.ConcurrentPriorityBlockingDemux;
-import org.jeactor.registry.PriorityEventRegistry;
+import org.jeactor.concurrent.demux.EventDemux;
+import org.jeactor.concurrent.demux.PriorityBlockingEventDemux;
+import org.jeactor.registry.PriorityEventRegistryService;
 import org.jeactor.registry.RegistryService;
 import org.jeactor.validation.Validations;
 import jakarta.validation.ValidationException;
 
 /** Basic reactor implementation. */
 @ThreadSafe
-class ConcurrentReactor implements AbstractConcurrentProxyReactor {
-    private final ConcurrentEventDemux eventDemultiplexor;
+class ReactorImpl implements Reactor {
+    private final EventDemux eventDemultiplexor;
     private final Executor taskExecutor;
     
     private boolean started;
@@ -33,11 +33,11 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
      * 
      * @param taskExecutor a concurrent executor to use for execution of event handlers when events are dispatched
      */
-    ConcurrentReactor(final Executor taskExecutor) {
-        this.eventDemultiplexor = new ConcurrentPriorityBlockingDemux(); 
+    ReactorImpl(final Executor taskExecutor) {
+        this.eventDemultiplexor = new PriorityBlockingEventDemux(); 
         this.started = false;
         this.taskExecutor = taskExecutor;
-        this.eventRegistry =  new PriorityEventRegistry();
+        this.eventRegistry =  new PriorityEventRegistryService();
     }
 
     /**
@@ -89,6 +89,7 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
     @Override
     public void accept(final Event event) throws ValidationException {
         Validations.validateNotNull(event);
+        
         eventDemultiplexor.accept(event);
     }
 
@@ -147,6 +148,11 @@ class ConcurrentReactor implements AbstractConcurrentProxyReactor {
         }
     }
 
+    /**
+     * Returns the class of the executor used by the reactor.
+     * 
+     * @return a class of the executor used by the reactor
+     */
     @Override
     public Class<? extends Executor> getExecutorClass() {
         return taskExecutor.getClass();

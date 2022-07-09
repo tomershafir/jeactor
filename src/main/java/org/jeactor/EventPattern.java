@@ -1,6 +1,6 @@
 package org.jeactor;
 
-/** Reresents patterns of events. */
+/** Reresents event patterns. */
 public enum EventPattern {
     /** Notification event pattern, i.e. minimal payload with back reference for further queries. */
     NOTIFICATION,

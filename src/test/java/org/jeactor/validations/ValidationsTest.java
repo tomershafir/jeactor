@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.jeactor.validation.Validations;
 import jakarta.validation.ValidationException;
 
-/** Unit test of Validations */
+/** Unit test of Validations. */
 public class ValidationsTest {
     /** Creates default unit test instance. */
     public ValidationsTest() {}

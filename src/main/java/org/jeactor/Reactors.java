@@ -3,13 +3,13 @@ package org.jeactor;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import org.jeactor.concurrent.ConcurrentSyncExecutor;
+import org.jeactor.concurrent.SynchronousExecutor;
 import org.jeactor.concurrent.ThreadSafe;
 import org.jeactor.validation.Validations;
 import jakarta.validation.ValidationException;
 
 /**
- * Utility class for reactors which is thread-safe. 
+ * Reactor factory utility. 
  * 
  * <p> Includes factory methods and more.
  * 
@@ -24,8 +24,8 @@ public final class Reactors {
      * 
      * @return a new synchronous thread-safe reactor
      */
-    public static AbstractConcurrentProxyReactor newSyncConcurrentReactor() {
-        return new ConcurrentReactor(new ConcurrentSyncExecutor());
+    public static Reactor newSyncConcurrentReactor() {
+        return new ReactorImpl(new SynchronousExecutor());
     }
 
     /**
@@ -33,8 +33,8 @@ public final class Reactors {
      * 
      * @return a new cached thread pool thread-safe reactor
      */
-    public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor() {
-        return new ConcurrentReactor(Executors.newCachedThreadPool());
+    public static Reactor newCachedThreadPoolConcurrentReactor() {
+        return new ReactorImpl(Executors.newCachedThreadPool());
     }
 
     /**
@@ -44,9 +44,9 @@ public final class Reactors {
      * @return a new cached thread pool thread-safe reactor
      * @throws ValidationException when null argument is supplied
      */
-    public static AbstractConcurrentProxyReactor newCachedThreadPoolConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
+    public static Reactor newCachedThreadPoolConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
         Validations.validateNotNull(threadFactory);
-        return new ConcurrentReactor(Executors.newCachedThreadPool(threadFactory));
+        return new ReactorImpl(Executors.newCachedThreadPool(threadFactory));
     }
 
     /**
@@ -56,9 +56,9 @@ public final class Reactors {
      * @return a new fixed thread pool thread-safe reactor
      * @throws ValidationException when supplied noThreads is negative or 0
      */
-    public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(final int noThreads) throws ValidationException {
+    public static Reactor newFixedThreadPoolConcurrentReactor(final int noThreads) throws ValidationException {
         Validations.validatePositive(noThreads);
-        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads));
+        return new ReactorImpl(Executors.newFixedThreadPool(noThreads));
     }
 
     /**
@@ -69,10 +69,10 @@ public final class Reactors {
      * @return a new fixed thread pool thread-safe reactor
      * @throws ValidationException when null factory is supplied or supplied noThreads is negative or 0
      */
-    public static AbstractConcurrentProxyReactor newFixedThreadPoolConcurrentReactor(final int noThreads, final ThreadFactory threadFactory) throws ValidationException {
+    public static Reactor newFixedThreadPoolConcurrentReactor(final int noThreads, final ThreadFactory threadFactory) throws ValidationException {
         Validations.validateNotNull(threadFactory);
         Validations.validatePositive(noThreads);
-        return new ConcurrentReactor(Executors.newFixedThreadPool(noThreads, threadFactory));
+        return new ReactorImpl(Executors.newFixedThreadPool(noThreads, threadFactory));
     }
 
     /**
@@ -80,8 +80,8 @@ public final class Reactors {
      * 
      * @return a new single worker thread-safe reactor
      */
-    public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor() {
-        return new ConcurrentReactor(Executors.newSingleThreadExecutor());
+    public static Reactor newSingleWorkerConcurrentReactor() {
+        return new ReactorImpl(Executors.newSingleThreadExecutor());
     }
 
     /**
@@ -91,9 +91,9 @@ public final class Reactors {
      * @return a new single worker thread-safe reactor
      * @throws ValidationException when null argument is supplied
      */
-    public static AbstractConcurrentProxyReactor newSingleWorkerConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
+    public static Reactor newSingleWorkerConcurrentReactor(final ThreadFactory threadFactory) throws ValidationException {
         Validations.validateNotNull(threadFactory);
-        return new ConcurrentReactor(Executors.newSingleThreadExecutor(threadFactory));
+        return new ReactorImpl(Executors.newSingleThreadExecutor(threadFactory));
     }
 
     /**
@@ -103,8 +103,8 @@ public final class Reactors {
      * @return a new synchronous thread-safe reactor
      * @throws ValidationException when a null argument is accepted
      */
-    public static AbstractConcurrentProxyReactor newConcurrentReactor(final Executor executor) throws ValidationException {
+    public static Reactor newConcurrentReactor(final Executor executor) throws ValidationException {
         Validations.validateNotNull(executor);
-        return new ConcurrentReactor(executor);
+        return new ReactorImpl(executor);
     }
 }

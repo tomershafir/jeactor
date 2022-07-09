@@ -1,17 +1,20 @@
-package org.jeactor.demux;
+package org.jeactor.concurrent.demux;
 
 import java.util.concurrent.PriorityBlockingQueue;
 import org.jeactor.Event;
 import org.jeactor.concurrent.ThreadSafe;
 
-/** Blocking event demultiplexor that supports prioritization. */
+/** 
+ * Represents a blocking event demultiplexor that supports prioritization.
+ * It collects events passively by consuming them from event sources that originate from the application threads. 
+ */
 @ThreadSafe
-public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux { 
+public class PriorityBlockingEventDemux implements EventDemux { 
     // BlockingQueue implementations are thread-safe for single-element operations, and here we have only single element operations
     private final PriorityBlockingQueue<Event> priorityBlockingQueue; 
     
-    /** Creates default event demultiplexor that is blocking, thread-safe and supports prioritization. */
-    public ConcurrentPriorityBlockingDemux() {
+    /** Creates default instance. */
+    public PriorityBlockingEventDemux() {
         // eager init to avoid additional application of synchronization in some way needed for lazy init, tradeoff: eager space allocation(which is anyway needed in this context) to avoid performace damage 
         priorityBlockingQueue = new PriorityBlockingQueue<>();
     }
@@ -27,9 +30,9 @@ public class ConcurrentPriorityBlockingDemux implements ConcurrentEventDemux {
     }
 
     /**
-     * Returns an accepted event.
+     * Returns a collected event.
      * 
-     * @return accepted event
+     * @return a collected event
      * @throws InterruptedException if interrupted while waiting     
      */
     @Override

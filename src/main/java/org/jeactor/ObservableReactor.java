@@ -2,7 +2,7 @@ package org.jeactor;
 
 import java.util.concurrent.Executor;
 
-/** Represents a reactor that expose some internal data for visibility, with compromising encapsulation and concurrency. */
+/** Represents a reactor that expose visibility data. */
 public interface ObservableReactor {
     /**
      * Returns the class of the executor used by the reactor.
