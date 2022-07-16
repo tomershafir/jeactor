@@ -20,13 +20,15 @@ class ReactorImpl implements Reactor {
     private final Executor taskExecutor;
     
     private boolean started;
-    private final Object startedSynchorinzaionObject = new Object();
+    private final Lock startedLock = new ReentrantLock();
     
     // instance created by factory cannot be exposed or we have thread synchronization problem
     private final RegistryService<String, PriorityConsumer<Event>> eventRegistry;
 
     // fair lock to avoid starvation, but bad effect on performance due to sort exec, also doesnt affect thread shceduling and is not honored by tryLock
     private final Lock registryLock = new ReentrantLock(true); 
+
+    private Thread mainEventLoopExecutor;
 
     /**
      * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
@@ -38,6 +40,85 @@ class ReactorImpl implements Reactor {
         this.started = false;
         this.taskExecutor = taskExecutor;
         this.eventRegistry =  new PriorityEventRegistryService();
+    }
+
+    /**
+     * Starts the main event loop of the reactor in a new thread and returns a reference to that thread.
+     * 
+     * <p>To stop the reactor, interrupt the executor thread or call close().
+     * 
+     * <p>If this reactor has already been started by a thread within the jvm process, calling run() has no effect. 
+     * 
+     * @return a thread reference to the thread that executes the main event loop
+     */
+    @Override
+    public Thread run() {
+        startedLock.lock();
+        try {
+            if (!started) {
+                started = true;
+                
+                // only the first thread that acquired startedLock executes the main loop
+                mainEventLoopExecutor = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            while (true) {
+                                final Event event = eventDemultiplexor.get();
+                                Collection<PriorityConsumer<Event>> eventConsumers = null;
+                
+                                if (null != event) {
+                                    registryLock.lock();
+                                    try { 
+                                        if (null != eventRegistry) {
+                                            eventConsumers = eventRegistry.getRegistered(event.getEventType());
+                                            if (null != eventConsumers) {
+                                                for (final Consumer<Event> consumer : eventConsumers) {
+                                                    taskExecutor.execute(new java.lang.Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            consumer.accept(event);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    } finally {
+                                        registryLock.unlock();
+                                    }
+                                }
+                
+                                // clear interrupted status
+                                if (Thread.interrupted())  
+                                    throw new InterruptedException(); 
+                            }
+                        } catch (InterruptedException e) {
+                            // TODO: add record in form of logs, metrics, traces
+
+                            // preserve interrupt status
+                            Thread.currentThread().interrupt();
+                        }         
+                    }
+                };
+                mainEventLoopExecutor.start();
+            }
+
+            // mainEventLoopExecutor here for sure has already been initialized by the first thread that acquired startedLock
+            return mainEventLoopExecutor;
+        } finally {
+            startedLock.unlock();
+        }
+    }
+
+    /**
+     * Closes the reactor and the resources associated with it.
+     * 
+     * @throws Exception
+     */
+    @Override
+    public void close() {
+        if (null != mainEventLoopExecutor)
+            mainEventLoopExecutor.interrupt();
     }
 
     /**
@@ -91,61 +172,6 @@ class ReactorImpl implements Reactor {
         Validations.validateNotNull(event);
         
         eventDemultiplexor.accept(event);
-    }
-
-    /**
-     * Starts the main event loop of the reactor within the current thread.
-     * 
-     * <p>To stop the reactor, interrupt the executor thread.
-     * 
-     * <p>If this reactor has already been started by a thread within the jvm process, calling run() has no effect. 
-     */
-    @Override
-    public void run() {
-        synchronized (startedSynchorinzaionObject) {
-            if (started)
-                return;
-            started = true;
-        }
-
-        // only the first thread that acuired startedSynchorinzableObject's lock executes the main loop
-        
-        try {
-            while (true) {
-                final Event event = eventDemultiplexor.get();
-                Collection<PriorityConsumer<Event>> eventConsumers = null;
-
-                if (null != event) {
-                    registryLock.lock();
-                    try { 
-                        if (null != eventRegistry) {
-                            eventConsumers = eventRegistry.getRegistered(event.getEventType());
-                            if (null != eventConsumers) {
-                                for (final Consumer<Event> consumer : eventConsumers) {
-                                    taskExecutor.execute(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            consumer.accept(event);
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    } finally {
-                        registryLock.unlock();
-                    }
-                }
-
-                // clear interrupted status
-                if (Thread.interrupted())  
-                    throw new InterruptedException(); 
-            }
-        } catch(InterruptedException e){
-            System.err.println(e.getMessage());
-            
-            // preserve interrupt status
-            Thread.currentThread().interrupt();
-        }
     }
 
     /**

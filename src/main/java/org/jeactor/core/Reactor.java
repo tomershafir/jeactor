@@ -7,8 +7,10 @@ import org.jeactor.util.registry.Registry;
  * Represents a publish-subscribe based reactor. 
  * 
  * <p>Initialization must be implemented via object construction.
- * 
- * <p>Shutdown must be implemented via interrupts.
  */
 @ThreadSafe
-public interface Reactor extends Runnable, Produceable<Event>, Registry<String, PriorityConsumer<Event>>, ObservableReactor {}
+public interface Reactor extends Runnable<Thread>,
+    AutoCloseable,
+    Registry<String, PriorityConsumer<Event>>, 
+    Produceable<Event>, 
+    ObservableReactor {}
