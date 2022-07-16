@@ -10,7 +10,6 @@ import org.jeactor.core.Event;
 import org.jeactor.core.Priority;
 import org.jeactor.core.PriorityConsumer;
 import org.jeactor.util.registry.PriorityEventRegistryService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;

@@ -5,14 +5,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.Collection;
 import java.util.function.Consumer;
-
 import org.jeactor.util.concurrent.ThreadSafe;
 import org.jeactor.util.concurrent.demux.EventDemux;
 import org.jeactor.util.concurrent.demux.PriorityBlockingEventDemux;
 import org.jeactor.util.registry.PriorityEventRegistryService;
 import org.jeactor.util.registry.RegistryService;
 import org.jeactor.util.validation.Validations;
-
 import jakarta.validation.ValidationException;
 
 /** Basic reactor implementation. */
@@ -83,13 +81,13 @@ class ReactorImpl implements Reactor {
     }
 
     /**
-     * Accepts an event to be processed into the reactor.
+     * Produces an event to be processed by reactor.
      * 
      * @param event an event be processed
      * @throws ValidationException when null argument is supplied
      */
     @Override
-    public void accept(final Event event) throws ValidationException {
+    public void produce(final Event event) throws ValidationException {
         Validations.validateNotNull(event);
         
         eventDemultiplexor.accept(event);

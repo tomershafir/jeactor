@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.jeactor.util.validation.Validations;
 import org.junit.jupiter.api.Test;
-
 import jakarta.validation.ValidationException;
 
 /** Unit test of Validations. */

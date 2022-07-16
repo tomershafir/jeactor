@@ -3,11 +3,9 @@ package org.jeactor.core;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-
 import org.jeactor.util.concurrent.SynchronousExecutor;
 import org.jeactor.util.concurrent.ThreadSafe;
 import org.jeactor.util.validation.Validations;
-
 import jakarta.validation.ValidationException;
 
 /**

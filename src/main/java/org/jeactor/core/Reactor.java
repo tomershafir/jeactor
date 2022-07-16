@@ -1,18 +1,14 @@
 package org.jeactor.core;
 
-import java.util.function.Consumer;
-
 import org.jeactor.util.concurrent.ThreadSafe;
 import org.jeactor.util.registry.Registry;
 
 /**
- * Represents a reactor. 
- * 
- * <p>Generally, reactor should support init, register, unregister, run, shutdown and accept operations.
+ * Represents a publish-subscribe based reactor. 
  * 
  * <p>Initialization must be implemented via object construction.
  * 
  * <p>Shutdown must be implemented via interrupts.
  */
 @ThreadSafe
-public interface Reactor extends Runnable, Consumer<Event>, Registry<String, PriorityConsumer<Event>>, ObservableReactor {}
+public interface Reactor extends Runnable, Produceable<Event>, Registry<String, PriorityConsumer<Event>>, ObservableReactor {}

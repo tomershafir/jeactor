@@ -1,7 +1,6 @@
 package org.jeactor.util.registry;
 
 import java.util.Collection;
-
 import org.jeactor.util.concurrent.NotThreadSafe;
 
 /**

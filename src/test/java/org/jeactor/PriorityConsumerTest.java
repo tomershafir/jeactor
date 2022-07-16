@@ -1,11 +1,9 @@
 package org.jeactor;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.jeactor.core.Priority;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.jeactor.core.Priority;
 import org.junit.jupiter.api.Test;
 
 /** Unit test of PriorityConsumer. */

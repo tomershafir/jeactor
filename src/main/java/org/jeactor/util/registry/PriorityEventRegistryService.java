@@ -3,7 +3,6 @@ package org.jeactor.util.registry;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-
 import org.jeactor.core.Event;
 import org.jeactor.core.PriorityConsumer;
 import org.jeactor.util.concurrent.NotThreadSafe;

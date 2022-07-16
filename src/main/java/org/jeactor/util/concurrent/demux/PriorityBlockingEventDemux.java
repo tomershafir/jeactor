@@ -1,7 +1,6 @@
 package org.jeactor.util.concurrent.demux;
 
 import java.util.concurrent.PriorityBlockingQueue;
-
 import org.jeactor.core.Event;
 import org.jeactor.util.concurrent.ThreadSafe;
 
