@@ -1,4 +1,4 @@
-package org.jeactor.validations;
+package org.jeactor.util.validations;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,9 +9,6 @@ import jakarta.validation.ValidationException;
 
 /** Unit test of Validations. */
 public class ValidationsTest {
-    /** Creates default unit test instance. */
-    public ValidationsTest() {}
-
     /** Tests that validateNotNull() with null input throws ValidationException. */
     @Test
     public void testValidateNotNullWithNullObjectsThrowsValidationException() {

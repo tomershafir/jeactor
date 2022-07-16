@@ -5,9 +5,6 @@ import java.util.concurrent.Executor;
 /** Executor that executes task synchronously in the caller thread. */
 @ThreadSafe // no in-memory state so thread safe
 public class SynchronousExecutor implements Executor { 
-    /** Creates default synchronous executor. */
-    public SynchronousExecutor() {}
-
     /**
      * Executes the sumbitted task synchronously.
      * 

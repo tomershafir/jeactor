@@ -1,4 +1,4 @@
-package org.jeactor.registry;
+package org.jeactor.util.registry;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jeactor.AbstractJeactorUnitTest;
+import org.jeactor.NopPriorityConsumer;
 import org.jeactor.core.Event;
 import org.jeactor.core.Priority;
 import org.jeactor.core.PriorityConsumer;
-import org.jeactor.util.registry.PriorityEventRegistryService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
@@ -17,18 +17,15 @@ import org.junit.jupiter.api.Test;
 
 /** Unit test of PriorityEventRegistry. */
 public class PriorityEventRegistryServiceTest extends AbstractJeactorUnitTest {
-    /** Creates default instance. */
-    public PriorityEventRegistryServiceTest() {}
-
     /** Tests that register() with new event type works as expected. */
     @Test
     public void testRegisterWithUnregisteredEventType() {
         assertTrue(new PriorityEventRegistryService().register("dummy", new NopPriorityConsumer<Event>()));
     }
 
-    /** Tests that register() with existing event type and new handler works as expected. */
+    /** Tests that register() with existing event type and new consumer works as expected. */
     @Test
-    public void testRegisterWithRegisteredEventTypeAndUnregisteredHandler() {
+    public void testRegisterWithRegisteredEventTypeAndUnregisteredConsumer() {
         final String eventType = "dummy";
         final PriorityEventRegistryService registry = new PriorityEventRegistryService();
         registry.register(eventType, new NopPriorityConsumer<Event>());
@@ -36,9 +33,9 @@ public class PriorityEventRegistryServiceTest extends AbstractJeactorUnitTest {
         assertTrue(registry.register(eventType, new NopPriorityConsumer<Event>()));
     }
 
-    /** Tests that register() with existing event type and existing handler works as expected. */
+    /** Tests that register() with existing event type and existing consumer works as expected. */
     @Test
-    public void testRegisterWithRegisteredEventTypeAndRegisteredHandler() {
+    public void testRegisterWithRegisteredEventTypeAndRegisteredConsumer() {
         final String eventType = "dummy";
         final PriorityEventRegistryService registry = new PriorityEventRegistryService();
         final NopPriorityConsumer<Event> consumer = new NopPriorityConsumer<Event>();
@@ -53,9 +50,9 @@ public class PriorityEventRegistryServiceTest extends AbstractJeactorUnitTest {
         assertFalse(new PriorityEventRegistryService().unregister("dummy", new NopPriorityConsumer<Event>()));
     }
 
-    /** Tests that unregister() with existing event type and new handler works as expected. */
+    /** Tests that unregister() with existing event type and new consumer works as expected. */
     @Test
-    public void testUnregisterWithRegisteredEventAndUnregisteredHandler() {
+    public void testUnregisterWithRegisteredEventAndUnregisteredConsumer() {
         final String eventType = "dummy";
         final PriorityEventRegistryService registry = new PriorityEventRegistryService();
         registry.register(eventType, new NopPriorityConsumer<Event>(Priority.CRITICAL));
@@ -63,9 +60,9 @@ public class PriorityEventRegistryServiceTest extends AbstractJeactorUnitTest {
         assertFalse(registry.unregister(eventType, new NopPriorityConsumer<Event>()));
     }
 
-    /** Tests that unregister() with existing event type and existing handler works as expected. */
+    /** Tests that unregister() with existing event type and existing consumer works as expected. */
     @Test
-    public void testUnregisterWithRegisteredEventAndRegisteredHandler() {
+    public void testUnregisterWithRegisteredEventAndRegisteredConsumer() {
         final String eventType = "dummy";
         final PriorityEventRegistryService registry = new PriorityEventRegistryService();
         final NopPriorityConsumer<Event> consumer = new NopPriorityConsumer<Event>();
@@ -74,9 +71,9 @@ public class PriorityEventRegistryServiceTest extends AbstractJeactorUnitTest {
         assertTrue(registry.unregister(eventType, consumer));
     }
 
-    /** Tests that unregister() with existing event type and more than 1 exisiting handlers works as expected. */
+    /** Tests that unregister() with existing event type and more than 1 exisiting consumers works as expected. */
     @Test
-    public void testUnregisterWithRegisteredEventAndMoreThan1RegisteredHandlers() {
+    public void testUnregisterWithRegisteredEventAndMoreThan1RegisteredConsumers() {
         final String eventType = "dummy";
         final PriorityEventRegistryService registry = new PriorityEventRegistryService();
         final NopPriorityConsumer<Event> consumer = new NopPriorityConsumer<Event>();
@@ -92,9 +89,9 @@ public class PriorityEventRegistryServiceTest extends AbstractJeactorUnitTest {
         assertNull(new PriorityEventRegistryService().getRegistered("dummy"));
     }
 
-    /** Tests that getRegistered() with existing event type and existing handlers returns a collection of the handlers. */
+    /** Tests that getRegistered() with existing event type and existing consumers returns a collection of the consumers. */
     @Test
-    public void testGetRegisteredWithRegisteredEventTypeAndRegisteredHandlersReturnsNewHandlerCollection() {
+    public void testGetRegisteredWithRegisteredEventTypeAndRegisteredConsumersReturnsNewConsumerCollection() {
         final String eventType = "dummy";
         final PriorityEventRegistryService registry = new PriorityEventRegistryService();
         final NopPriorityConsumer<Event> consumer = new NopPriorityConsumer<Event>();

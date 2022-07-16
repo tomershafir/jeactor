@@ -31,7 +31,7 @@ class ReactorImpl implements Reactor {
     /**
      * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
      * 
-     * @param taskExecutor a concurrent executor to use for execution of event handlers when events are dispatched
+     * @param taskExecutor a concurrent executor to use for execution of event consumers when events are dispatched
      */
     ReactorImpl(final Executor taskExecutor) {
         this.eventDemultiplexor = new PriorityBlockingEventDemux(); 
@@ -41,40 +41,40 @@ class ReactorImpl implements Reactor {
     }
 
     /**
-     * Subscribes an handler with an event type.
+     * Registers an consumer with an event type.
      * 
      * @param eventType string event type identifier
-     * @param handler a consumer of event to associate with the supplied event type
+     * @param consumer a consumer of event to associate with the supplied event type
      * @return boolean value indicating wether the subscription succeeded or not
      * @throws ValidationException when null argument is supplied
      */
     @Override
-    public boolean register(final String eventType, final PriorityConsumer<Event> handler) throws ValidationException {
-        Validations.validateNotNull(eventType, handler);
+    public boolean register(final String eventType, final PriorityConsumer<Event> consumer) throws ValidationException {
+        Validations.validateNotNull(eventType, consumer);
 
         registryLock.lock();
         try {
-            return eventRegistry.register(eventType, handler);
+            return eventRegistry.register(eventType, consumer);
         } finally {
             registryLock.unlock();
         }
     }
 
     /**
-     * Unsubscribes an handler with an event type.
+     * Unregisters an consumer with an event type.
      * 
      * @param eventType 
-     * @param handler
+     * @param consumer
      * @return boolean value indicating wether the unsubscription succeeded or not
      * @throws ValidationException when null argument is supplied
      */
     @Override
-    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) throws ValidationException {
-        Validations.validateNotNull(eventType, handler);
+    public boolean unregister(final String eventType, final PriorityConsumer<Event> consumer) throws ValidationException {
+        Validations.validateNotNull(eventType, consumer);
 
         registryLock.lock();
         try {        
-            return eventRegistry.unregister(eventType, handler);
+            return eventRegistry.unregister(eventType, consumer);
         } finally {
             registryLock.unlock();
         }
@@ -113,19 +113,19 @@ class ReactorImpl implements Reactor {
         try {
             while (true) {
                 final Event event = eventDemultiplexor.get();
-                Collection<PriorityConsumer<Event>> eventHandlers = null;
+                Collection<PriorityConsumer<Event>> eventConsumers = null;
 
                 if (null != event) {
                     registryLock.lock();
                     try { 
                         if (null != eventRegistry) {
-                            eventHandlers = eventRegistry.getRegistered(event.getEventType());
-                            if (null != eventHandlers) {
-                                for (final Consumer<Event> handler : eventHandlers) {
+                            eventConsumers = eventRegistry.getRegistered(event.getEventType());
+                            if (null != eventConsumers) {
+                                for (final Consumer<Event> consumer : eventConsumers) {
                                     taskExecutor.execute(new Runnable() {
                                         @Override
                                         public void run() {
-                                            handler.accept(event);
+                                            consumer.accept(event);
                                         }
                                     });
                                 }

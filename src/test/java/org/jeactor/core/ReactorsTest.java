@@ -1,4 +1,4 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,16 +8,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import org.jeactor.core.Reactors;
+import org.jeactor.AbstractJeactorUnitTest;
+import org.jeactor.NopExecutor;
 import org.jeactor.util.concurrent.SynchronousExecutor;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ValidationException;
 
 /** Unit test of Reactors class. */
 public class ReactorsTest extends AbstractJeactorUnitTest {
-    /** Creates default unit test instance. */
-    public ReactorsTest() {}
-
     /** Tests that new synchronous concurrent reactor is created correctly. */
     @Test
     public void testNewSyncConcurrentReactor() {

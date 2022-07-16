@@ -18,37 +18,37 @@ public class PriorityEventRegistryService implements RegistryService<String, Pri
     }
 
     /**
-     * Registeres an handler to the accepted event type.
+     * Registeres an consumer to the accepted event type.
      * 
      * @param eventType string event type identifier
-     * @param handler a consumer of event to associate with the supplied event type
+     * @param consumer a consumer of event to associate with the supplied event type
      * @return boolean value indicating wether the redistry state has been changed or not
      */
     @Override
-    public boolean register(final String eventType, final PriorityConsumer<Event> handler) {
-        PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
-        if (null == eventHandlers) {
-            eventHandlers = new PriorityQueue<PriorityConsumer<Event>>();
-            registryData.put(eventType, eventHandlers);
+    public boolean register(final String eventType, final PriorityConsumer<Event> consumer) {
+        PriorityQueue<PriorityConsumer<Event>> eventConsumers = registryData.get(eventType);
+        if (null == eventConsumers) {
+            eventConsumers = new PriorityQueue<PriorityConsumer<Event>>();
+            registryData.put(eventType, eventConsumers);
         }
-        return eventHandlers.add(handler);
+        return eventConsumers.add(consumer);
     }
     
     /**
-     * Unregisteres an handler from the accepted event type.
+     * Unregisteres an consumer from the accepted event type.
      * 
      * @param eventType string event type identifier
-     * @param handler a consumer of event to unregister
+     * @param consumer a consumer of event to unregister
      * @return boolean value indicating wether the redistry state has been changed or not
      */
     @Override
-    public boolean unregister(final String eventType, final PriorityConsumer<Event> handler) {
+    public boolean unregister(final String eventType, final PriorityConsumer<Event> consumer) {
         boolean flag = false;
-        final PriorityQueue<PriorityConsumer<Event>> eventHandlers = registryData.get(eventType);
-        if (null != eventHandlers) {
-            flag = eventHandlers.remove(handler); 
+        final PriorityQueue<PriorityConsumer<Event>> eventConsumers = registryData.get(eventType);
+        if (null != eventConsumers) {
+            flag = eventConsumers.remove(consumer); 
             
-            if (eventHandlers.isEmpty())
+            if (eventConsumers.isEmpty())
                 registryData.remove(eventType);
         }
         return flag;

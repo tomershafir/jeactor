@@ -1,4 +1,4 @@
-package org.jeactor.concurrent;
+package org.jeactor.util.concurrent;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
@@ -7,14 +7,10 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.jeactor.AbstractJeactorUnitTest;
-import org.jeactor.util.concurrent.SynchronousExecutor;
 import org.junit.jupiter.api.Test;
 
 /** Unit test of SynchronousExecutor. */
 public class SynchronousExecutorTest extends AbstractJeactorUnitTest {
-    /** Creates default unit test instance. */
-    public SynchronousExecutorTest() {}
-
     /** Tests that execute() operates in the calling thread. */
     @Test
     public void testExecuteOperatesInCallingThread() {

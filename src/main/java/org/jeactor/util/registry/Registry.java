@@ -15,7 +15,7 @@ public interface Registry<K, V> {
      * 
      * @param key a key to which the accepted value is registered
      * @param value a value to register
-     * @return boolean value indicating wether the accepted handler has been registered or not
+     * @return boolean value indicating wether the accepted value has been registered or not
      * @throws NullPointerException when null argument is supplied
      */
     boolean register(K key, V value) throws NullPointerException;
@@ -25,7 +25,7 @@ public interface Registry<K, V> {
      * 
      * @param key a key from which the accepted value is unregistered
      * @param value a value to unregister
-     * @return boolean value indicating wether the accepted handler has been unregistered or not
+     * @return boolean value indicating wether the accepted value has been unregistered or not
      * @throws NullPointerException when null argument is supplied
      */
     boolean unregister(K key, V value) throws NullPointerException;

@@ -1,20 +1,16 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
-import org.jeactor.core.Event;
-import org.jeactor.core.Priority;
+import org.jeactor.AbstractJeactorUnitTest;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ValidationException;
 
 /** Unit test of Event. */
 public class EventTest extends AbstractJeactorUnitTest {
-    /** Creates default instance. */
-    public EventTest() {}
- 
     /** Tests that an event cannot be created with null event type. */
     @Test
     public void testEventWithNullEventTypeThrowsValidationException() {

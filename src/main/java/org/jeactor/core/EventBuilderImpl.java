@@ -12,9 +12,6 @@ public class EventBuilderImpl implements Builder<Event> { // counts on Event's v
     private String jsonPayload;
     private UUID uuid;
     
-    /** Creates a default builder instance. */
-    public EventBuilderImpl() {}
-
     /**
      * Sets event type for the event being built.
      * 

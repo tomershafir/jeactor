@@ -1,16 +1,14 @@
-package org.jeactor;
+package org.jeactor.core;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.jeactor.core.Priority;
+import org.jeactor.AbstractJeactorUnitTest;
+import org.jeactor.NopPriorityConsumer;
 import org.junit.jupiter.api.Test;
 
 /** Unit test of PriorityConsumer. */
 public class PriorityConsumerTest extends AbstractJeactorUnitTest {
-    /** Creates default instance. */
-    public PriorityConsumerTest() {}
-   
     /** Tests that compareTo() with lower priority input object returns positive integer. */
     @Test
     public void testCompareToLowerPriorityObjectReturnsPositiveInt() {
