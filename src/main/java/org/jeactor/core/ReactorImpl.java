@@ -18,107 +18,155 @@ import jakarta.validation.ValidationException;
 class ReactorImpl implements Reactor {
     private final EventDemux eventDemultiplexor;
     private final Executor taskExecutor;
-    
-    private boolean started;
-    private final Lock startedLock = new ReentrantLock();
-    
-    // instance created by factory cannot be exposed or we have thread synchronization problem
+
     private final RegistryService<String, PriorityConsumer<Event>> eventRegistry;
+    private final Lock registryLock; 
 
-    // fair lock to avoid starvation, but bad effect on performance due to sort exec, also doesnt affect thread shceduling and is not honored by tryLock
-    private final Lock registryLock = new ReentrantLock(true); 
+    private boolean started;
+    private final Lock startLock;
 
-    private Thread mainEventLoopExecutor;
+    private boolean closed;
+    private final Lock closeLock;
+
+    private Thread backgroundThread;
+
 
     /**
-     * Creates a thread safe reactor with the accepted event demultiplexor and task executor.
+     * Creates a thread safe reactor with the accepted task executor.
      * 
      * @param taskExecutor a concurrent executor to use for execution of event consumers when events are dispatched
      */
     ReactorImpl(final Executor taskExecutor) {
-        this.eventDemultiplexor = new PriorityBlockingEventDemux(); 
-        this.started = false;
+        this.eventDemultiplexor = new PriorityBlockingEventDemux();
+
+        // instance created by factory must not be exposed or we have aliasing problem
         this.taskExecutor = taskExecutor;
+
+        this.started = false;
+        startLock = new ReentrantLock();
+
+        closed = false;
+        closeLock = new ReentrantLock();
+
         this.eventRegistry =  new PriorityEventRegistryService();
+
+        // fair lock to avoid starvation, but bad effect on performance due to sort exec, also doesnt affect thread scheduling and is not honored by tryLock
+        registryLock = new ReentrantLock(true);
     }
 
     /**
-     * Starts the main event loop of the reactor in a new thread and returns a reference to that thread.
+     * Starts the main event loop of the reactor in a new background thread and returns a reference to that thread.
      * 
-     * <p>To stop the reactor, interrupt the executor thread or call close().
+     * <p>To stop the reactor, interrupt the background thread or call close().
      * 
-     * <p>If this reactor has already been started by a thread within the jvm process, calling run() has no effect. 
+     * <p>If this reactor has already been started by a thread, or has already been closed, calling run() has no effect. 
      * 
-     * @return a thread reference to the thread that executes the main event loop
+     * @return a thread reference to the background thread that executes the main event loop
      */
     @Override
-    public Thread run() {
-        startedLock.lock();
+    public Thread start() {
+        startLock.lock();
         try {
-            if (!started) {
+            // nested locking here is not problematic considering deadlock because ther is no opposite way of nesting
+            if (!started && !isClosed()) {
                 started = true;
                 
-                // only the first thread that acquired startedLock executes the main loop
-                mainEventLoopExecutor = new Thread() {
+                // only the first thread that acquires startLock spawns a new thread
+                // we must return here because otherwise we may have a deadlock (because the executing thread holds startLock indefinitely)
+                backgroundThread = new Thread() {
                     @Override
                     public void run() {
                         try {
                             while (true) {
                                 final Event event = eventDemultiplexor.get();
-                                Collection<PriorityConsumer<Event>> eventConsumers = null;
+                                
+                                dispatch(event);
                 
-                                if (null != event) {
-                                    registryLock.lock();
-                                    try { 
-                                        if (null != eventRegistry) {
-                                            eventConsumers = eventRegistry.getRegistered(event.getEventType());
-                                            if (null != eventConsumers) {
-                                                for (final Consumer<Event> consumer : eventConsumers) {
-                                                    taskExecutor.execute(new java.lang.Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            consumer.accept(event);
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        }
-                                    } finally {
-                                        registryLock.unlock();
-                                    }
-                                }
-                
-                                // clear interrupted status
+                                // clears interrupted status
                                 if (Thread.interrupted())  
                                     throw new InterruptedException(); 
                             }
-                        } catch (InterruptedException e) {
-                            // TODO: add record in form of logs, metrics, traces
-
-                            // preserve interrupt status
-                            Thread.currentThread().interrupt();
+                        } catch (final InterruptedException e) {
+                            handleInterrupt(e);
                         }         
                     }
                 };
-                mainEventLoopExecutor.start();
+                backgroundThread.start();
             }
 
-            // mainEventLoopExecutor here for sure has already been initialized by the first thread that acquired startedLock
-            return mainEventLoopExecutor;
+            // backgroundThread here for sure has already been initialized by the first thread that acquired startLock
+            return backgroundThread;
         } finally {
-            startedLock.unlock();
+            startLock.unlock();
         }
     }
 
     /**
-     * Closes the reactor and the resources associated with it.
+     * Dispathces the accepted event.
      * 
-     * @throws Exception
+     * @param event an event to dispatch
+     */
+    private void dispatch(final Event event) {
+        Collection<PriorityConsumer<Event>> eventConsumers = null;
+                
+        if (null != event) {
+            registryLock.lock();
+            try { 
+                if (null != eventRegistry) {
+                    eventConsumers = eventRegistry.getRegistered(event.getEventType());
+                    if (null != eventConsumers) {
+                        for (final Consumer<Event> consumer : eventConsumers) {
+                            taskExecutor.execute(new java.lang.Runnable() {
+                                @Override
+                                public void run() {
+                                    consumer.accept(event);
+                                }
+                            });
+                        }
+                    }
+                }
+            } finally {
+                registryLock.unlock();
+            }
+        }
+    }
+
+    /**
+     * Handles interruption of the reactor's background thread.
+     * 
+     * <p>Interrupting the reactor's background thread will always result in InterruptedException being thrown, 
+     * due to the combination of catch and periodic polling (and then throwing InterruptedException if interrupted).
+     * 
+     * @param e thrown interrupted exception
+     */
+    private void handleInterrupt(final InterruptedException e) {
+        // TODO: add record in form of logs, metrics, traces
+
+        // preserve interrupt status
+        Thread.currentThread().interrupt(); // <=> backgroundThread.interrupt()
+
+        closeLock.lock();
+        try {
+            closed = true;
+        } finally {
+            closeLock.unlock();
+        }
+    }
+
+    /**
+     * Closes the reactor and the resources associated with it. If the reactor hasn't been started yet, close() has no effect.
+     * 
+     * @throws Exception if an error occurs
      */
     @Override
     public void close() {
-        if (null != mainEventLoopExecutor)
-            mainEventLoopExecutor.interrupt();
+        startLock.lock();
+        try {
+            if (started)
+                backgroundThread.interrupt();
+        } finally {
+            startLock.unlock();
+        }
     }
 
     /**
@@ -182,5 +230,20 @@ class ReactorImpl implements Reactor {
     @Override
     public Class<? extends Executor> getExecutorClass() {
         return taskExecutor.getClass();
+    }
+
+    /**
+     * Returns wether the reator has been closed or not.
+     * 
+     * @return a boolean indicating wether the reator has been closed or not
+     */
+    @Override
+    public boolean isClosed() {
+        closeLock.lock();
+        try {
+            return closed;
+        } finally {
+            closeLock.unlock();
+        }
     }
 }

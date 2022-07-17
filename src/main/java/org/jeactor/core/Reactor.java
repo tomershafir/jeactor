@@ -9,7 +9,7 @@ import org.jeactor.util.registry.Registry;
  * <p>Initialization must be implemented via object construction.
  */
 @ThreadSafe
-public interface Reactor extends Runnable<Thread>,
+public interface Reactor extends Startable<Thread>,
     AutoCloseable,
     Registry<String, PriorityConsumer<Event>>, 
     Produceable<Event>, 

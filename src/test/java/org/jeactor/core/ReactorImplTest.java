@@ -133,7 +133,9 @@ public class ReactorImplTest extends AbstractJeactorUnitTest {
         });
     }
 
+    // TODO: test run()
 
+    // TODO: test close() and interruption and isClosed()
 
     /** Tests that getExecutorClass() returns the executor class object of the reactor's executor. */
     @Test

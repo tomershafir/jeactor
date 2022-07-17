@@ -10,4 +10,11 @@ public interface ObservableReactor {
      * @return a class of the executor used by the reactor
      */
     Class<? extends Executor> getExecutorClass();
+
+    /**
+     * Returns wether the reator has been closed or not.
+     * 
+     * @return a boolean indicating wether the reator has been closed or not
+     */
+    boolean isClosed();
 }
