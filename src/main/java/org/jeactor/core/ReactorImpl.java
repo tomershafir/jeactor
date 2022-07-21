@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import org.jeactor.util.concurrent.ThreadSafe;
 import org.jeactor.util.concurrent.demux.EventDemux;
 import org.jeactor.util.concurrent.demux.PriorityBlockingEventDemux;
+import org.jeactor.util.concurrent.lock.Locks;
 import org.jeactor.util.registry.PriorityEventRegistryService;
 import org.jeactor.util.registry.RegistryService;
 import org.jeactor.util.validation.Validations;
@@ -29,7 +30,6 @@ class ReactorImpl implements Reactor {
     private final Lock closeLock;
 
     private Thread backgroundThread;
-
 
     /**
      * Creates a thread safe reactor with the accepted task executor.
@@ -65,8 +65,7 @@ class ReactorImpl implements Reactor {
      */
     @Override
     public Thread start() {
-        startLock.lock();
-        try {
+        return Locks.exec(startLock, ()->{
             // nested locking here is not problematic considering deadlock because ther is no opposite way of nesting
             if (!started && !isClosed()) {
                 started = true;
@@ -96,9 +95,7 @@ class ReactorImpl implements Reactor {
 
             // backgroundThread here for sure has already been initialized by the first thread that acquired startLock
             return backgroundThread;
-        } finally {
-            startLock.unlock();
-        }
+        });
     }
 
     /**
@@ -107,11 +104,10 @@ class ReactorImpl implements Reactor {
      * @param event an event to dispatch
      */
     private void dispatch(final Event event) {
-        Collection<PriorityConsumer<Event>> eventConsumers = null;
-                
         if (null != event) {
-            registryLock.lock();
-            try { 
+            Locks.exec(registryLock, ()->{
+                Collection<PriorityConsumer<Event>> eventConsumers = null;
+
                 if (null != eventRegistry) {
                     eventConsumers = eventRegistry.getRegistered(event.getEventType());
                     if (null != eventConsumers) {
@@ -125,9 +121,7 @@ class ReactorImpl implements Reactor {
                         }
                     }
                 }
-            } finally {
-                registryLock.unlock();
-            }
+            });
         }
     }
 
@@ -145,12 +139,7 @@ class ReactorImpl implements Reactor {
         // preserve interrupt status
         Thread.currentThread().interrupt(); // <=> backgroundThread.interrupt()
 
-        closeLock.lock();
-        try {
-            closed = true;
-        } finally {
-            closeLock.unlock();
-        }
+        Locks.exec(closeLock, ()->closed = true);
     }
 
     /**
@@ -160,13 +149,10 @@ class ReactorImpl implements Reactor {
      */
     @Override
     public void close() {
-        startLock.lock();
-        try {
+        Locks.exec(startLock, ()->{
             if (started)
                 backgroundThread.interrupt();
-        } finally {
-            startLock.unlock();
-        }
+        });
     }
 
     /**
@@ -181,12 +167,9 @@ class ReactorImpl implements Reactor {
     public boolean register(final String eventType, final PriorityConsumer<Event> consumer) throws ValidationException {
         Validations.validateNotNull(eventType, consumer);
 
-        registryLock.lock();
-        try {
+        return Locks.exec(registryLock, ()->{
             return eventRegistry.register(eventType, consumer);
-        } finally {
-            registryLock.unlock();
-        }
+        });
     }
 
     /**
@@ -201,12 +184,9 @@ class ReactorImpl implements Reactor {
     public boolean unregister(final String eventType, final PriorityConsumer<Event> consumer) throws ValidationException {
         Validations.validateNotNull(eventType, consumer);
 
-        registryLock.lock();
-        try {        
+        return Locks.exec(registryLock, ()->{
             return eventRegistry.unregister(eventType, consumer);
-        } finally {
-            registryLock.unlock();
-        }
+        });
     }
 
     /**
@@ -239,11 +219,6 @@ class ReactorImpl implements Reactor {
      */
     @Override
     public boolean isClosed() {
-        closeLock.lock();
-        try {
-            return closed;
-        } finally {
-            closeLock.unlock();
-        }
+        return Locks.exec(closeLock, ()->closed);
     }
 }
