@@ -5,6 +5,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import org.mockito.Mockito;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,5 +75,24 @@ public abstract class AbstractUnitTest {
 
         if (mocks.size() > 0)
             verifyNoMoreInteractions(mocks);
+    }
+
+    /**
+     * Executes tests on autoclosable objects and safely releases used resources.
+     * 
+     * @param <T> an autoclosable type
+     * @param factory a supplier that returns an instance to be injected to the test
+     * @param test a test to execute with the factory produced instance
+     * @throws Exception if en error occurs during resources closure
+     */
+    protected <T extends AutoCloseable> void testWithResources(final Supplier<T> factory, final Consumer<T> test) throws Exception {
+        T t = null;
+        try {
+            t = factory.get();
+            test.accept(t);
+        } finally {
+            if (null != t)
+                t.close();
+        }
     }
 }

@@ -15,122 +15,90 @@ import jakarta.validation.ValidationException;
 public class ReactorImplTest extends AbstractJeactorUnitTest {
     /** Tests that register() with null event type throws ValidationException. */
     @Test
-    public void testRegisterWithNullEventTypeThrowsValidationException() {
-        assertThrows(ValidationException.class, ()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.register(null, new NopPriorityConsumer<>());
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testRegisterWithNullEventTypeThrowsValidationException() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertThrows(ValidationException.class, ()->reactor.register(null, new NopPriorityConsumer<>()));
             }
-        });
+        );
     }
 
     /** Tests that register() with null consumer type throws ValidationException. */
     @Test
-    public void testRegisterWithNullConsumerThrowsValidationException() {
-        assertThrows(ValidationException.class, ()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.register("dummy", null);
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testRegisterWithNullConsumerThrowsValidationException() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertThrows(ValidationException.class, ()->reactor.register("dummy", null));
             }
-        });
+        );
     }
 
     /** Tests that register() registers a consumer with an event type. */
     @Test
-    public void testRegister() {
-        assertDoesNotThrow(()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.register("dummy", new NopPriorityConsumer<>());
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testRegister() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertDoesNotThrow(()->reactor.register("dummy", new NopPriorityConsumer<>()));
             }
-        });
+        );
     }
 
     /** Tests that unregister() with null event type throws ValidationException. */
     @Test
-    public void testUnregisterWithNullEventTypeThrowsValidationException() {
-        assertThrows(ValidationException.class, ()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.unregister(null, new NopPriorityConsumer<>());
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testUnregisterWithNullEventTypeThrowsValidationException() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertThrows(ValidationException.class, ()->reactor.unregister(null, new NopPriorityConsumer<>()));
             }
-        });
+        );
     }
 
     /** Tests that unregister() with null consumer type throws ValidationException. */
     @Test
-    public void testUnregisterWithNullConsumerThrowsValidationException() {
-        assertThrows(ValidationException.class, ()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.unregister("dummy", null);
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testUnregisterWithNullConsumerThrowsValidationException() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertThrows(ValidationException.class, ()->reactor.unregister("dummy", null));
             }
-        });
+        );
     }
 
     /** Tests that unregister() unregisters a consumer with an event type. */
     @Test
-    public void testUnregister() {
-        assertDoesNotThrow(()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.unregister("dummy", new NopPriorityConsumer<>());
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testUnregister() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertDoesNotThrow(()->reactor.unregister("dummy", new NopPriorityConsumer<>()));
             }
-        });
+        );
     }
 
     /** Tests that produce() with null event throws ValidationException. */
     @Test
-    public void testProduceWithNullEventThrowsValidationException() {
-        assertThrows(ValidationException.class, ()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.produce(null);
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testProduceWithNullEventThrowsValidationException() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertThrows(ValidationException.class, ()->reactor.produce(null));
             }
-        });
+        );
     }
 
     /** Tests that produce() produces an event to the reactor. */
     @Test
-    public void testProduce() {
-        assertDoesNotThrow(()->{
-            Reactor reactor = null;
-            try {
-                reactor = new ReactorImpl(new SynchronousExecutor());
-                reactor.produce(new Event("eventType", Priority.NORMAL, EventPattern.NOTIFICATION, "{}", UUID.randomUUID()));
-            } finally {
-                if (null != reactor)
-                    reactor.close();
+    public void testProduce() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertDoesNotThrow(()->reactor.produce(new Event("eventType", Priority.NORMAL, EventPattern.NOTIFICATION, "{}", UUID.randomUUID())));
             }
-        });
+        );
     }
 
     // TODO: test run()
@@ -139,14 +107,12 @@ public class ReactorImplTest extends AbstractJeactorUnitTest {
 
     /** Tests that getExecutorClass() returns the executor class object of the reactor's executor. */
     @Test
-    public void testGetExecutorClass() throws Exception{
-        Reactor reactor = null;
-        try {
-            reactor = new ReactorImpl(new SynchronousExecutor());
-            assertEquals(SynchronousExecutor.class, reactor.getExecutorClass());
-        } finally {
-            if (null != reactor)
-                reactor.close();
-        }
+    public void testGetExecutorClass() throws Exception {
+        testWithResources(
+            ()->new ReactorImpl(new SynchronousExecutor()),
+            (reactor)->{
+                assertEquals(SynchronousExecutor.class, reactor.getExecutorClass());
+            }
+        );
     }
 }
